@@ -1,10 +1,9 @@
 #include <vector>
 #include <string>
 #include <iostream>
-
 using namespace std;
 
-#define B 8
+#define B 10
 
 vector<int> addition(vector<int> a, vector<int> b)
 {
@@ -309,26 +308,93 @@ vector<int> karatsuba(vector<int> a, vector<int> b)
 
     return z4;
 }
+vector<int> division(vector<int> a, vector<int> b) // a=bq+r
+// size of a is k and b is l
+{
+    cout << "division" << endl;
+    vector<int> q, r; // q will have at most k-l+1 base B digits
+    int k = a.size();
+    int l = b.size();
+    cout << "a's size is " << k << " and b's size is " << l << endl;
 
+    int carry;
+    r = a;          // 0 to k-1
+    r.push_back(0); // k
+    print_number(r);
+    for (int i = 0; i < k; i++)
+    {
+        q.push_back(0);
+    }
+    for (int i = k - l; i >= 0; i--)
+    {
+
+        q[i] = (r[i + l] * B + r[i + l - 1]) / b[l - 1];
+        cout << "r[i+l] = " << r[i + l] << " r[i+l-1] = " << r[i + l - 1] << " b[l-1] = " << b[l - 1] << endl;
+        cout << "q[i] = " << q[i] << endl;
+        if (q[i] >= B)
+        {
+            cout << "q[i] is greater than B" << endl;
+            q[i] = B - 1;
+        }
+        carry = 0;
+        for (int j = 0; j < l; j++)
+        {
+            int temp = r[i + j] - q[i] * b[j] + carry;
+            cout << "r[i+j] = " << r[i + j] << " b[j] = " << b[j] << " carry = " << carry << endl;
+            cout << "temp = " << temp << endl;
+            carry = temp / B;
+            r[i + j] = temp % B;
+            cout << "quotient = " << carry << endl;
+            cout << "remainder = " << r[i + j] << endl;
+        }
+        r[i + l] += carry;
+        cout << "r[i+l] = " << r[i + l] << endl;
+        while (r[i + l] < 0)
+        {
+            cout << "Inside while loop" << endl;
+            carry = 0;
+            for (int j = 0; j < l - 1; j++)
+            {
+                int temp = r[i + j] + b[i] + carry;
+                cout << "r[i+j] = " << r[i + j] << " b[j] = " << b[j] << " carry = " << carry << endl;
+                carry = temp / B;
+                r[i + j] = temp % B;
+                cout << "quotient = " << carry << endl;
+                cout << "remainder = " << r[i + j] << endl;
+            }
+            r[i + l] += carry;
+            cout << "r[i+l] = " << r[i + l] << endl;
+
+            q[i] -= 1;
+            cout << "quotient = " << q[i] << endl;
+        }
+    }
+    cout << q.size() << endl;
+    print_number(q);
+    print_number(r);
+
+    return q;
+}
 int main()
 {
 
     vector<int> a;
 
     // a.push_back(2);
-    // a.push_back(0);
-    // a.push_back(0);
-    a.push_back(7);
+    a.push_back(0);
+    a.push_back(0);
+    a.push_back(1);
 
     vector<int> b;
-    b.push_back(0);
-    b.push_back(0);
-    b.push_back(1);
+    // b.push_back(0);
+    // b.push_back(0);
+    b.push_back(7);
     print_number(a);
     print_number(b);
 
     checkAndAdd(a, b);
     checkAndSubtract(a, b);
     checkAndMultiply(a, b);
+    division(a, b);
     return 0;
 }
