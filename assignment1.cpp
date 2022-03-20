@@ -4,7 +4,15 @@
 using namespace std;
 
 #define B 10
+void print_number(vector<int> d)
+{
+    for (int i = d.size() - 1; i > -1; i--)
+    {
+        cout << d[i] << "";
+    }
 
+    cout << endl;
+}
 vector<int> addition(vector<int> a, vector<int> b)
 {
     int l1 = a.size();
@@ -51,7 +59,7 @@ vector<int> addition(vector<int> a, vector<int> b)
 
     return c;
 }
-
+// assuming only positive numbers are passed
 int comparator(vector<int> a, vector<int> b) // returns 1 if a is greater than b else 0
 {
     if (a.size() > b.size())
@@ -70,7 +78,74 @@ int comparator(vector<int> a, vector<int> b) // returns 1 if a is greater than b
     }
     return 0;
 }
+vector<int> trialAddition(vector<int> a, vector<int> b)
+{
+    cout << " trial addition" << endl;
+    vector<int> result;
+    int carry = 0, i = 0;
+    for (i = 0; i < min(a.size(), b.size()); i++)
+    {
+        result.push_back((a[i] + b[i] + carry) % B);
+        carry = (a[i] + b[i] + carry) / B;
+    }
 
+    for (int j = i; j < max(a.size(), b.size()); j++)
+    {
+        printf("j=%d\n", j);
+        if (max(a.size(), b.size()) == a.size())
+        {
+            result.push_back((a[j] + carry) % B);
+            carry = (a[j] + carry) / B;
+        }
+        else
+        {
+            result.push_back((b[j] + carry) % B);
+            carry = (b[j] + carry) / B;
+        }
+    }
+    result.push_back(carry);
+    print_number(result);
+    return result;
+}
+vector<int> trialSubtraction(vector<int> a, vector<int> b) // a-b
+{
+    cout << "trialSubtraction" << endl;
+    vector<int> result;
+    int carry = 0;
+    // padding zeroes
+    if (a.size() > b.size())
+    {
+        while (b.size() != a.size())
+        {
+            b.push_back(0);
+        }
+    }
+    else
+    {
+        while (b.size() != a.size())
+        {
+            a.push_back(0);
+        }
+    }
+
+    for (int i = 0; i < a.size(); i++)
+    {
+
+        if (a[i] - b[i] + carry < 0)
+        {
+            result.push_back(B + (a[i] - b[i] + carry));
+            carry = -1;
+        }
+        else
+        {
+            result.push_back(a[i] - b[i] + carry);
+            carry = 0;
+        }
+    }
+    result.push_back(carry);
+    print_number(result);
+    return result;
+}
 vector<int> adjustCarry(vector<int> a, int index) // returns a vector after adjusting the carry
 {
     for (int i = index + 1; i < a.size(); i++)
@@ -199,15 +274,7 @@ vector<int> subtraction(vector<int> a, vector<int> b) // b-a
 
     return c;
 }
-void print_number(vector<int> d)
-{
-    for (int i = d.size() - 1; i > -1; i--)
-    {
-        cout << d[i] << "";
-    }
 
-    cout << endl;
-}
 vector<int> multiplication(vector<int> a, vector<int> b)
 {
     //     fori←0 to k+l−1 do ci ←0
@@ -243,7 +310,7 @@ vector<int> multiplication(vector<int> a, vector<int> b)
 
     return c;
 }
-void checkAndSubtract(vector<int> a, vector<int> b)
+vector<int> checkAndSubtract(vector<int> a, vector<int> b)
 {
     cout << "Subtract" << endl;
     vector<int> d;
@@ -261,6 +328,7 @@ void checkAndSubtract(vector<int> a, vector<int> b)
         // d[d.size() - 1] *= -1;
     }
     print_number(d);
+    return d;
 }
 
 void checkAndAdd(vector<int> a, vector<int> b)
@@ -270,19 +338,20 @@ void checkAndAdd(vector<int> a, vector<int> b)
     c = adjustSign(c);
     print_number(c);
 }
-void checkAndMultiply(vector<int> a, vector<int> b)
+vector<int> checkAndMultiply(vector<int> a, vector<int> b)
 {
     cout << "Multiplication" << endl;
     vector<int> e = multiplication(a, b);
     e = adjustSign(e);
     print_number(e);
+    return e;
 }
 vector<int> karatsuba(vector<int> a, vector<int> b)
 {
     int l = a.size();
     int k = b.size();
 
-    if (l == 1 || k == 1) // base case
+    if (l == 1 || k == 1) // B case
         return multiplication(a, b);
 
     vector<int> a1, a0, b1, b0;
@@ -308,11 +377,106 @@ vector<int> karatsuba(vector<int> a, vector<int> b)
 
     return z4;
 }
+
+vector<int> division_one_digit(vector<int> a, int d)
+{
+    int hi = 0;
+    int k = a.size();
+    vector<int> q;
+    for (int i = k - 1; i > -1; i--)
+        q.push_back(0);
+
+    for (int i = k - 1; i > -1; i--)
+    {
+        int temp = hi * B + a[i];
+        q[i] = temp / d;
+        hi = temp % d;
+    }
+    print_number(q);
+    return q;
+}
+
+vector<int> divTrial(vector<int> a, vector<int> b) // 100/14
+{
+    cout << "Division" << endl;
+    vector<int> q, r;
+    int k = a.size();
+    int l = b.size();
+    int m = l - 1;
+    vector<int> msb;
+
+    for (int i = 0; i < m; i++)
+    {
+        msb.push_back(0);
+    }
+    cout << "MSB" << endl;
+    msb.push_back(b[m]);
+    print_number(msb);
+    vector<int> quick_dividend;
+    for (int i = k - l; i <= k - 1; i++)
+    {
+        quick_dividend.push_back(a[i]);
+    }
+    print_number(quick_dividend);
+    cout << "msb of b  =" << b[m] << endl;
+    // 10
+    vector<int> Q = division_one_digit(quick_dividend, b[m]); // 100
+    cout << "quotient" << endl;
+    print_number(Q);
+    vector<int> R;
+
+    vector<int> ans = multiplication(Q, b);
+    cout << "Answer" << endl;
+    print_number(ans);
+    vector<int> remainder = checkAndSubtract(a, ans);
+    if (remainder[remainder.size() - 1] > 0 && comparator(remainder, b) == 0) // remainder is positive and less than b
+        return Q;
+    else
+    {
+        do
+        {
+            cout << "Inside else" << endl;
+            vector<int> one;
+            one.push_back(1);
+            Q = subtraction(one,Q);
+            cout << "new quotient = " << endl;
+            print_number(Q);
+            ans = multiplication(Q, b);
+            cout << "Answer" << endl;
+            print_number(ans);
+            remainder = checkAndSubtract(a, ans);
+            cout << "remainder = " << endl;
+            print_number(remainder);
+
+        } while (remainder[remainder.size() - 1] > 0 && comparator(remainder, b) == 0);
+    }
+
+    // print_number(R);
+
+    // vector<int> Qn = addition(Q, division_one_digit(R, b[m]));
+    // Q = division_one_digit(addition(Qn, Q), 2);
+    // print_number(R);
+    // print_number(Qn);
+    // print_number(Q);
+    // } while (R.size() >= l);
+
+    // // done till step 7
+
+    // R = subtraction(multiplication(Q, b), a);
+    // print_number(R);
+    // check the last part of the algo...not sure abt it
+
+    //    if (R>=0)
+    //     return Q
+    print_number(Q);
+    return Q;
+}
+
 vector<int> division(vector<int> a, vector<int> b) // a=bq+r
 // size of a is k and b is l
 {
     cout << "division" << endl;
-    vector<int> q, r; // q will have at most k-l+1 base B digits
+    vector<int> q, r; // q will have at most k-l+1 B B digits
     int k = a.size();
     int l = b.size();
     cout << "a's size is " << k << " and b's size is " << l << endl;
@@ -381,20 +545,34 @@ int main()
     vector<int> a;
 
     // a.push_back(2);
-    a.push_back(0);
-    a.push_back(0);
-    a.push_back(1);
+    // a.push_back(9);
+    // a.push_back(9);
+    // a.push_back(9);
+    // a.push_back(9);
+    a.push_back(9);
+    a.push_back(9);
+    a.push_back(9);
+    // a.push_back(9);
+    // a.push_back(9);
 
     vector<int> b;
     // b.push_back(0);
-    // b.push_back(0);
-    b.push_back(7);
+    // b.push_back(9);
+    // b.push_back(8);
+    // b.push_back(7);
+    // b.push_back(5);
+    b.push_back(6);
+    b.push_back(5);
     print_number(a);
     print_number(b);
 
     checkAndAdd(a, b);
     checkAndSubtract(a, b);
     checkAndMultiply(a, b);
-    division(a, b);
+    // division(a, b);
+    division_one_digit(a, 8);
+    divTrial(a, b);
+    // trialSubtraction(a, b);
+    // trialAddition(a, b);
     return 0;
 }
