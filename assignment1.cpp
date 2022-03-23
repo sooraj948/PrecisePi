@@ -505,6 +505,32 @@ pair<vector<int>,int> division_real(vector<int> a, int power_a,vector<int> b,int
     return make_pair(c,power_a-power_b+precision);
 }
 
+pair<vector<int>,int> sq_root(vector<int> R, int power_R,vector<int> x0,int power_x0)
+{
+    pair<vector <int>,int> x;
+
+    vector <int> half;
+    half.push_back(5);//*10**-1
+
+    pair<vector <int>,int> temp ;//inside ()
+
+    pair<vector<int>,int> R_by_x = division_real(R,power_R,x0,power_x0);
+    
+    temp = addition_real(x0,power_x0,R_by_x.first,R_by_x.second);
+
+    x= multiplication_real(half,-1,temp.first,temp.second);
+
+    if (x.first.size()<1000)//some arbitrary precision
+        return sq_root(R,power_R,x.first,x.second);
+    else
+        return x;
+
+
+
+
+
+}
+
 
 int main()
 {
@@ -525,7 +551,7 @@ int main()
     vector<int> b;
     // b.push_back(0);
     // b.push_back(6);
-    b.push_back(3);
+    b.push_back(1);
     // b.push_back(0);
     // b.push_back(0);
     
@@ -565,5 +591,11 @@ int main()
     print_number(c3.first);
     printf("%d\n",c3.second);
 
+
+    printf("Sq root  \n");
+    pair<vector <int> ,int> c4 = sq_root(a,0,b,0);
+    print_number(c4.first);
+    printf("%d\n",c4.second);
+    
     return 0;
 }
