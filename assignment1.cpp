@@ -6,6 +6,8 @@
 using namespace std;
 
 #define B 10
+#define precision 100
+
 void print_number(vector<int> d)
 {
     for (int i = d.size() - 1; i > -1; i--)
@@ -481,10 +483,26 @@ vector<int> division(vector<int> a, vector<int> b)
     return q;
 }
 
+vector<int> pad_zeroes_at_end(vector<int>a)
+{
+    vector<int> result;
+
+    for(int i=0;i<precision;i++)
+    {
+        result.push_back(0);
+    }
+    for(int i=0;i<a.size();i++)
+    {
+        result.push_back(a[i]);
+    }
+    return result;
+}
 pair<vector<int>,int> division_real(vector<int> a, int power_a,vector<int> b,int power_b)
 {
-    vector<int> c= division(a,b);
-    return make_pair(c,power_a-power_b);
+    vector<int> c= pad_zeroes_at_end(a);
+    print_number(c);
+    c = division(c,b);
+    return make_pair(c,power_a-power_b+precision);
 }
 
 
@@ -494,24 +512,24 @@ int main()
     vector<int> a;
 
     // a.push_back(2);
-    a.push_back(9);
-    a.push_back(9);
-    a.push_back(9);
-    a.push_back(1);
+    // a.push_back(9);
+    // a.push_back(9);
+    // a.push_back(9);
+    // a.push_back(1);
     a.push_back(2);
-    a.push_back(7);
+    // a.push_back(7);
     // a.push_back(7);
     // a.push_back(9);
     // a.push_back(9);
 
     vector<int> b;
     // b.push_back(0);
-    b.push_back(6);
-    b.push_back(5);
-    b.push_back(0);
-    b.push_back(0);
+    // b.push_back(6);
+    b.push_back(3);
+    // b.push_back(0);
+    // b.push_back(0);
     
-    b.push_back(1);
+    // b.push_back(1);
     print_number(a);
     print_number(b);
 
@@ -543,7 +561,7 @@ int main()
     printf("%d\n",c2.second);
 
     printf("Division real \n");
-    pair<vector <int> ,int> c3 = division_real(a,-1,b,-2);
+    pair<vector <int> ,int> c3 = division_real(a,0,b,0);
     print_number(c3.first);
     printf("%d\n",c3.second);
 
