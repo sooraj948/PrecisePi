@@ -323,6 +323,12 @@ vector<int> multiplication(vector<int> a, vector<int> b)
 
     return c;
 }
+
+pair<vector<int>,int> multiplication_real(vector<int> a, int power_a,vector<int> b,int power_b)
+{
+    vector<int> c= multiplication(a,b);
+    return make_pair(c,power_a+power_b);
+}
 vector<int> checkAndSubtract(vector<int> a, vector<int> b)
 {
     cout << "Subtract" << endl;
@@ -408,102 +414,92 @@ vector<int> division_one_digit(vector<int> a, int d)
     print_number(q);
     return q;
 }
-
-
-
-vector<int> division(vector<int> a, vector<int> b) // a=bq+r
-
+vector<int> division(vector<int> a, vector<int> b)
 {
-    // size of a is k and b is l
-    cout << "division" << endl;
-    vector<int> q, r; // q will have at most k-l+1 B B digits
+    vector<int> r;
+    vector<int> q;
+    int carry = 0;
+    int temp;
     int k = a.size();
     int l = b.size();
-    cout << "a's size is " << k << " and b's size is " << l << endl;
+    int d = k - l;
+    // cout << l << " " << k << endl;
 
-    int carry;
-    r = a;          // 0 to k-1
-    r.push_back(0); // k
-    print_number(r);
-    for (int i = 0; i < k-l; i++)
+    for (int i = d; i >= 0; i--)
     {
+        // printf("%d\n",i);
         q.push_back(0);
     }
+    r = a;
+
+    r.push_back(0);
+    // cout << r.size() << endl;
+
     for (int i = k - l; i >= 0; i--)
     {
+        q[i] = ((r[i + l] * B) + r[i + l - 1]) / b[l - 1];
+        // q[i] += r[i + l - 1];
+        // q[i] = q[i] / b[l - 1];
 
-        q[i] = (r[i + l] * B + r[i + l - 1]) / b[l - 1];
-        cout << "r[i+l] = " << r[i + l] << " r[i+l-1] = " << r[i + l - 1] << " b[l-1] = " << b[l - 1] << endl;
-        cout << "q[i] = " << q[i] << endl;
         if (q[i] >= B)
         {
-            cout << "q[i] is greater than B" << endl;
             q[i] = B - 1;
         }
         carry = 0;
+        // printf("%d %d\n",i,q[i]);
         for (int j = 0; j < l; j++)
         {
-            int temp = r[i + j] - q[i] * b[j] + carry;
-            cout << "r[i+j] = " << r[i + j] << " b[j] = " << b[j] << " carry = " << carry << endl;
-            cout << "temp = " << temp << endl;
+            temp = r[i + j] - (q[i] * b[j]) + carry;
             carry = temp / B;
             r[i + j] = temp % B;
-
-            cout << "quotient = " << carry << endl;
-            cout << "remainder = " << r[i + j] << endl;
-
-            if(r[i+j]<0)
+            if (r[i + j] < 0)
             {
-                carry-=1;
-                r[i+j]+=B;
+                carry -= 1;
+                r[i + j] += B;
             }
         }
-        r[i + l] += carry;
-        cout << "r[i+l] = " << r[i + l] << endl;
+        r[i + l] = r[i + l] + carry;
         while (r[i + l] < 0)
         {
-            cout << "Inside while loop" << endl;
             carry = 0;
-            for (int j = 0; j < l - 1; j++)
+            for (int j = 0; j < l; j++)
             {
-                int temp = r[i + j] + b[j] + carry;
-                cout << "r[i+j] = " << r[i + j] << " b[j] = " << b[j] << " carry = " << carry << endl;
+                temp = r[i + j] + b[j] + carry;
                 carry = temp / B;
                 r[i + j] = temp % B;
-                cout << "quotient = " << carry << endl;
-                cout << "remainder = " << r[i + j] << endl;
-
-                if(r[i+j]<0)
+                if (r[i + j] < 0)
                 {
-                    carry-=1;
-                    r[i+j]+=B;
+                    carry -= 1;
+                    r[i + j] += B;
                 }
             }
             r[i + l] += carry;
-            cout << "r[i+l] = " << r[i + l] << endl;
-
             q[i] -= 1;
-            cout << "quotient = " << q[i] << endl;
         }
     }
-    cout << q.size() << endl;
-    print_number(q);
-    print_number(r);
 
     return q;
 }
+
+pair<vector<int>,int> division_real(vector<int> a, int power_a,vector<int> b,int power_b)
+{
+    vector<int> c= division(a,b);
+    return make_pair(c,power_a-power_b);
+}
+
+
 int main()
 {
 
     vector<int> a;
 
     // a.push_back(2);
-    // a.push_back(9);
-    // a.push_back(9);
-    // a.push_back(9);
-    // a.push_back(1);
+    a.push_back(9);
+    a.push_back(9);
+    a.push_back(9);
+    a.push_back(1);
     a.push_back(2);
-    // a.push_back(7);
+    a.push_back(7);
     // a.push_back(7);
     // a.push_back(9);
     // a.push_back(9);
@@ -540,6 +536,16 @@ int main()
     pair<vector <int> ,int> c1 = subtraction_real(a,0,b,-2);
     print_number(c1.first);
     printf("%d\n",c1.second);
+
+    printf("Multiplication real \n");
+    pair<vector <int> ,int> c2 = multiplication_real(a,-1,b,-2);
+    print_number(c2.first);
+    printf("%d\n",c2.second);
+
+    printf("Division real \n");
+    pair<vector <int> ,int> c3 = division_real(a,-1,b,-2);
+    print_number(c3.first);
+    printf("%d\n",c3.second);
 
     return 0;
 }
