@@ -65,49 +65,44 @@ vector<int> addition(vector<int> a, vector<int> b)
 }
 // assuming only positive numbers are passed
 
-vector<int>  pad_zeroes(vector<int> a,int n)
+vector<int> pad_zeroes(vector<int> a, int n)
 {
     vector<int> c;
 
-    for (int i=0;i<n;i++)
+    for (int i = 0; i < n; i++)
         c.push_back(0);
-    
-    for (int i=0;i<a.size();i++)
+
+    for (int i = 0; i < a.size(); i++)
         c.push_back(a[i]);
-    
 
     return c;
 }
-pair<vector<int>,int> addition_real(vector<int> a, int power_a,vector<int> b,int power_b)
+pair<vector<int>, int> addition_real(vector<int> a, int power_a, vector<int> b, int power_b)
 {
-    //power_a and b are the exponents of 10. always negative
+    // power_a and b are the exponents of 10. always negative
 
     int l1 = a.size();
     int l2 = b.size();
-    vector<int> c;//answer
-    int carry=0;
+    vector<int> c; // answer
+    int carry = 0;
 
-    if (power_a<power_b)
+    if (power_a < power_b)
     {
-        b=pad_zeroes(b,power_b-power_a);
-        power_b=power_a;
-        
-
+        b = pad_zeroes(b, power_b - power_a);
+        power_b = power_a;
     }
     else
     {
-        a=pad_zeroes(a,-power_b+power_a);
-        power_a=power_b;
+        a = pad_zeroes(a, -power_b + power_a);
+        power_a = power_b;
     }
 
     print_number(a);
     print_number(b);
 
-    c=addition(a,b);
+    c = addition(a, b);
 
-    return make_pair(c,power_a);
-
-
+    return make_pair(c, power_a);
 }
 int comparator(vector<int> a, vector<int> b) // returns 1 if a is greater than b else 0
 {
@@ -179,14 +174,15 @@ vector<int> adjustNegativeSign(vector<int> a)
 }
 vector<int> subtraction(vector<int> a, vector<int> b) // b-a
 
-
 {
     int l1 = a.size(); // always less than l2
     int l2 = b.size();
     vector<int> c;
     // cout << "size of a is =" << l1 << endl;
     // cout << "size of b is =" << l2 << endl;
-
+    cout << "Subtraction of " << endl;
+    print_number(b);
+    print_number(a);
     int carry = 0;
     if (l1 == l2)
     {
@@ -255,40 +251,56 @@ vector<int> subtraction(vector<int> a, vector<int> b) // b-a
         if (carry)
             c.push_back(carry);
     }
-
+    cout << "b-a = " << endl;
+    print_number(c);
     return c;
 }
-
-pair<vector<int>,int> subtraction_real(vector<int> a, int power_a,vector<int> b,int power_b)
-{   //here b>a .. has to be 
-    //power_a and b are the exponents of 10. always negative
-   
-    int l1 = a.size();
-    int l2 = b.size();
-    vector<int> c;//answer
-    int carry=0;
-
-    if (power_a<power_b)
+vector<int> checkAndSubtract(vector<int> a, vector<int> b)
+{
+    cout << "Subtract" << endl;
+    vector<int> d;
+    if (comparator(a, b)) // a is greater than b
     {
-        b=pad_zeroes(b,power_b-power_a);
-        power_b=power_a;
-        
-
+        // cout << "a-b" << endl;
+        d = subtraction(b, a); // d=a-b
+        d = adjustSign(d);
     }
     else
     {
-        a=pad_zeroes(a,-power_b+power_a);
-        power_a=power_b;
+        // cout << "b-a" << endl;
+        d = subtraction(a, b); // d=b-a
+        d = adjustNegativeSign(d);
+        // d[d.size() - 1] *= -1;
+    }
+    print_number(d);
+    return d;
+}
+pair<vector<int>, int> subtraction_real(vector<int> a, int power_a, vector<int> b, int power_b)
+{ // here b>a .. has to be
+    // power_a and b are the exponents of 10. always negative
+
+    int l1 = a.size();
+    int l2 = b.size();
+    vector<int> c; // answer
+    int carry = 0;
+    cout << "number a =";
+    print_number(a);
+    cout << "number b =";
+    print_number(b);
+    if (power_a < power_b)
+    {
+        b = pad_zeroes(b, power_b - power_a);
+        power_b = power_a;
+    }
+    else
+    {
+        a = pad_zeroes(a, -power_b + power_a);
+        power_a = power_b;
     }
 
-    print_number(a);
-    print_number(b);
+    c = checkAndSubtract(a, b);
 
-    c=subtraction(a,b);
-
-    return make_pair(c,power_a);
-
-
+    return make_pair(c, power_a);
 }
 vector<int> multiplication(vector<int> a, vector<int> b)
 {
@@ -326,30 +338,10 @@ vector<int> multiplication(vector<int> a, vector<int> b)
     return c;
 }
 
-pair<vector<int>,int> multiplication_real(vector<int> a, int power_a,vector<int> b,int power_b)
+pair<vector<int>, int> multiplication_real(vector<int> a, int power_a, vector<int> b, int power_b)
 {
-    vector<int> c= multiplication(a,b);
-    return make_pair(c,power_a+power_b);
-}
-vector<int> checkAndSubtract(vector<int> a, vector<int> b)
-{
-    cout << "Subtract" << endl;
-    vector<int> d;
-    if (comparator(a, b)) // a is greater than b
-    {
-        // cout << "a-b" << endl;
-        d = subtraction(b, a); // d=a-b
-        d = adjustSign(d);
-    }
-    else
-    {
-        // cout << "b-a" << endl;
-        d = subtraction(a, b); // d=b-a
-        d = adjustNegativeSign(d);
-        // d[d.size() - 1] *= -1;
-    }
-    print_number(d);
-    return d;
+    vector<int> c = multiplication(a, b);
+    return make_pair(c, power_a + power_b);
 }
 
 void checkAndAdd(vector<int> a, vector<int> b)
@@ -483,54 +475,64 @@ vector<int> division(vector<int> a, vector<int> b)
     return q;
 }
 
-vector<int> pad_zeroes_at_end(vector<int>a)
+vector<int> pad_zeroes_at_end(vector<int> a)
 {
     vector<int> result;
 
-    for(int i=0;i<precision;i++)
+    for (int i = 0; i < precision; i++)
     {
         result.push_back(0);
     }
-    for(int i=0;i<a.size();i++)
+    for (int i = 0; i < a.size(); i++)
     {
         result.push_back(a[i]);
     }
     return result;
 }
-pair<vector<int>,int> division_real(vector<int> a, int power_a,vector<int> b,int power_b)
+pair<vector<int>, int> division_real(vector<int> a, int power_a, vector<int> b, int power_b)
 {
-    vector<int> c= pad_zeroes_at_end(a);
+    vector<int> c = pad_zeroes_at_end(a);
     print_number(c);
-    c = division(c,b);
-    return make_pair(c,power_a-power_b+precision);
+    c = division(c, b);
+    return make_pair(c, power_a - power_b + precision);
 }
+// pair<vector<int>, vector<int>> squareroot(vector<int> R, int power_R, vector<int> x0, int power_x0)
+// {
 
-pair<vector<int>,int> sq_root(vector<int> R, int power_R,vector<int> x0,int power_x0)
+//     vector<int> none0, const2;
+
+//     const2.push_back(2);
+
+//     int power_of_x0, power_of_x0_sq, count = 0;
+
+//     while (count < precision)
+//     {
+//         pair<vector<int>, int> R_by_Xn;
+//         R_by_Xn = division_real(R, power_R, x0, power_x0);
+
+//         count++;
+//     }
+// }
+pair<vector<int>, int> sq_root(vector<int> R, int power_R, vector<int> x0, int power_x0)
 {
-    pair<vector <int>,int> x;
+    pair<vector<int>, int> x;
 
-    vector <int> half;
-    half.push_back(5);//*10**-1
+    vector<int> half;
+    half.push_back(5); //*10**-1
 
-    pair<vector <int>,int> temp ;//inside ()
+    pair<vector<int>, int> temp; // inside ()
 
-    pair<vector<int>,int> R_by_x = division_real(R,power_R,x0,power_x0);
-    
-    temp = addition_real(x0,power_x0,R_by_x.first,R_by_x.second);
+    pair<vector<int>, int> R_by_x = division_real(R, power_R, x0, power_x0);
 
-    x= multiplication_real(half,-1,temp.first,temp.second);
+    temp = addition_real(x0, power_x0, R_by_x.first, R_by_x.second);
 
-    if (x.first.size()<1000)//some arbitrary precision
-        return sq_root(R,power_R,x.first,x.second);
+    x = multiplication_real(half, -1, temp.first, temp.second);
+
+    if (x.first.size() < precision) // some arbitrary precision
+        return sq_root(R, power_R, x.first, x.second);
     else
         return x;
-
-
-
-
-
 }
-
 
 int main()
 {
@@ -554,7 +556,7 @@ int main()
     b.push_back(1);
     // b.push_back(0);
     // b.push_back(0);
-    
+
     // b.push_back(1);
     print_number(a);
     print_number(b);
@@ -562,7 +564,7 @@ int main()
     checkAndAdd(a, b);
     checkAndSubtract(a, b);
     checkAndMultiply(a, b);
-    vector <int > q = division(a, b);
+    vector<int> q = division(a, b);
     printf("Normal division quotient\n");
     print_number(q);
     division_one_digit(a, 8);
@@ -572,30 +574,31 @@ int main()
     // trialAddition(a, b);
 
     printf("Addition real \n");
-    pair<vector <int> ,int> c = addition_real(a,0,b,-2);
+    pair<vector<int>, int> c = addition_real(a, 0, b, -2);
     print_number(c.first);
-    printf("%d\n",c.second);
+    printf("%d\n", c.second);
 
     printf("Subtraction real \n");
-    pair<vector <int> ,int> c1 = subtraction_real(a,0,b,-2);
+    pair<vector<int>, int> c1 = subtraction_real(a, 0, b, -2); // 2-0.01=1.99
+    cout << "answer = ";
     print_number(c1.first);
-    printf("%d\n",c1.second);
+    cout << "power =";
+    printf("%d\n", c1.second);
 
     printf("Multiplication real \n");
-    pair<vector <int> ,int> c2 = multiplication_real(a,-1,b,-2);
+    pair<vector<int>, int> c2 = multiplication_real(a, -1, b, -2);
     print_number(c2.first);
-    printf("%d\n",c2.second);
+    printf("%d\n", c2.second);
 
     printf("Division real \n");
-    pair<vector <int> ,int> c3 = division_real(a,0,b,0);
+    pair<vector<int>, int> c3 = division_real(a, 0, b, 0);
     print_number(c3.first);
-    printf("%d\n",c3.second);
-
+    printf("%d\n", c3.second);
 
     printf("Sq root  \n");
-    pair<vector <int> ,int> c4 = sq_root(a,0,b,0);
+    pair<vector<int>, int> c4 = sq_root(a, 0, b, 0);
     print_number(c4.first);
-    printf("%d\n",c4.second);
-    
+    printf("%d\n", c4.second);
+
     return 0;
 }
