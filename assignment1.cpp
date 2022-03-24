@@ -17,6 +17,26 @@ void print_number(vector<int> d)
 
     cout << endl;
 }
+
+void print_pair_number(pair<vector<int>,int> d)
+{
+    cout <<"0";
+    int i;
+    for ( i= d.first.size() - 1; i > -d.second-1 ; i--)
+    {
+        cout << d.first[i] << "";
+    }
+    cout<<".";
+    for(;i>-1;i--)
+    {
+        cout << d.first[i] << "";
+
+    }
+
+
+    cout << endl;
+
+}
 vector<int> addition(vector<int> a, vector<int> b)
 {
     int l1 = a.size();
@@ -97,8 +117,8 @@ pair<vector<int>, int> addition_real(vector<int> a, int power_a, vector<int> b, 
         power_a = power_b;
     }
 
-    print_number(a);
-    print_number(b);
+    // print_number(a);
+    // print_number(b);
 
     c = addition(a, b);
 
@@ -405,7 +425,7 @@ vector<int> division_one_digit(vector<int> a, int d)
         q[i] = temp / d;
         hi = temp % d;
     }
-    print_number(q);
+    // print_number(q);
     return q;
 }
 vector<int> division(vector<int> a, vector<int> b)
@@ -478,10 +498,13 @@ vector<int> division(vector<int> a, vector<int> b)
 vector<int> pad_zeroes_at_end(vector<int> a)
 {
     vector<int> result;
-
-    for (int i = 0; i < precision; i++)
+    if (a.size()<precision)
     {
-        result.push_back(0);
+
+        for (int i = 0; i < precision; i++)
+        {
+            result.push_back(0);
+        }
     }
     for (int i = 0; i < a.size(); i++)
     {
@@ -492,9 +515,9 @@ vector<int> pad_zeroes_at_end(vector<int> a)
 pair<vector<int>, int> division_real(vector<int> a, int power_a, vector<int> b, int power_b)
 {
     vector<int> c = pad_zeroes_at_end(a);
-    print_number(c);
+    // print_number(c);
     c = division(c, b);
-    return make_pair(c, power_a - power_b + precision);
+    return make_pair(c, power_a - power_b - precision);
 }
 // pair<vector<int>, vector<int>> squareroot(vector<int> R, int power_R, vector<int> x0, int power_x0)
 // {
@@ -515,20 +538,37 @@ pair<vector<int>, int> division_real(vector<int> a, int power_a, vector<int> b, 
 // }
 pair<vector<int>, int> sq_root(vector<int> R, int power_R, vector<int> x0, int power_x0)
 {
+    static int count=0;
+    count++;
+    cout << "count is "<<count<<endl;
     pair<vector<int>, int> x;
 
     vector<int> half;
     half.push_back(5); //*10**-1
+    half.push_back(0);
 
     pair<vector<int>, int> temp; // inside ()
 
     pair<vector<int>, int> R_by_x = division_real(R, power_R, x0, power_x0);
 
+    cout << "R by x is "<<endl;
+    //R_by_x is empty ??? check this
+    print_number(R_by_x.first);
+
+
     temp = addition_real(x0, power_x0, R_by_x.first, R_by_x.second);
+    cout <<"temp ";
+    print_pair_number(temp);
 
     x = multiplication_real(half, -1, temp.first, temp.second);
 
-    if (x.first.size() < precision) // some arbitrary precision
+    cout <<"intermediate x is "<<endl;
+
+    print_number(x.first);
+    cout <<x.second<<endl;
+
+
+    if (count<12) // some arbitrary precision
         return sq_root(R, power_R, x.first, x.second);
     else
         return x;
@@ -552,7 +592,7 @@ int main()
 
     vector<int> b;
     // b.push_back(0);
-    // b.push_back(6);
+    b.push_back(4);
     b.push_back(1);
     // b.push_back(0);
     // b.push_back(0);
@@ -593,10 +633,13 @@ int main()
     printf("Division real \n");
     pair<vector<int>, int> c3 = division_real(a, 0, b, 0);
     print_number(c3.first);
+    
     printf("%d\n", c3.second);
 
+    print_pair_number(c3);
+
     printf("Sq root  \n");
-    pair<vector<int>, int> c4 = sq_root(a, 0, b, 0);
+    pair<vector<int>, int> c4 = sq_root(a, 0, b, -1);
     print_number(c4.first);
     printf("%d\n", c4.second);
 
