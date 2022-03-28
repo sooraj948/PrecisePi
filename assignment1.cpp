@@ -20,6 +20,8 @@ void print_number(vector<int> d)
 
 void print_pair_number(pair<vector<int>,int> d)
 {
+    cout <<"size of vector in print pair "<< d.first.size()<<endl;
+
     cout <<"0";
     int i;
     for ( i= d.first.size() - 1; i > -d.second-1 ; i--)
@@ -189,6 +191,29 @@ vector<int> adjustNegativeSign(vector<int> a)
             (*it) *= -1;
             break;
         }
+    }
+    return a;
+}
+vector<int> removeXZeroes(vector<int>a,int num)
+{
+    
+    for (auto it = a.end() - 1; it != a.begin(); --it)
+    {
+        if(num == 0)
+        {
+            cout<<"Removed the zeroes"<<endl;
+            print_number(a);
+            break;
+        }
+        num--;
+        if (*it == 0)
+        {
+            a.erase(it);
+        }
+       else
+       {
+           break;
+       }
     }
     return a;
 }
@@ -437,7 +462,11 @@ vector<int> division(vector<int> a, vector<int> b)
     int k = a.size();
     int l = b.size();
     int d = k - l;
-    // cout << l << " " << k << endl;
+    cout<<"Printing a"<<endl;
+    print_number(a);
+    cout<<"Printing b"<<endl;
+    print_number(b);
+    cout << l << " " << k << endl;
 
     for (int i = d; i >= 0; i--)
     {
@@ -448,10 +477,23 @@ vector<int> division(vector<int> a, vector<int> b)
 
     r.push_back(0);
     // cout << r.size() << endl;
+    //finding first non zero
 
+    int denom=1;
+    for (int i=l-1;i>-1;i--)
+    {
+        if (b[i])
+        {
+            denom = b[i];
+            break;
+        }
+
+            
+
+    }
     for (int i = k - l; i >= 0; i--)
     {
-        q[i] = ((r[i + l] * B) + r[i + l - 1]) / b[l - 1];
+        q[i] = ((r[i + l] * B) + r[i + l - 1]) / denom;
         // q[i] += r[i + l - 1];
         // q[i] = q[i] / b[l - 1];
 
@@ -498,14 +540,14 @@ vector<int> division(vector<int> a, vector<int> b)
 vector<int> pad_zeroes_at_end(vector<int> a)
 {
     vector<int> result;
-    if (a.size()<precision)
-    {
+    // if (a.size()<precision)
+    // {
 
         for (int i = 0; i < precision; i++)
         {
             result.push_back(0);
         }
-    }
+    // }
     for (int i = 0; i < a.size(); i++)
     {
         result.push_back(a[i]);
@@ -518,7 +560,10 @@ pair<vector<int>, int> division_real(vector<int> a, int power_a, vector<int> b, 
     // print_number(c);
     cout <<" c is "<<endl;
     print_number(c);
+    b= removeXZeroes(b,b.size()+power_b);
+    
     c = division(c, b);
+    cout <<"b's power is " << power_b<<endl;
     return make_pair(c, power_a - power_b - precision);
 }
 // pair<vector<int>, vector<int>> squareroot(vector<int> R, int power_R, vector<int> x0, int power_x0)
@@ -546,12 +591,15 @@ pair<vector<int>, int> sq_root(vector<int> R, int power_R, vector<int> x0, int p
     pair<vector<int>, int> x;
 
     vector<int> half;
-    half.push_back(5); //*10**-1
+    cout<<"Pushing"<<endl;
+    half.push_back(B/2); //*10**-1
     half.push_back(0);
 
     pair<vector<int>, int> temp; // inside ()
 
     pair<vector<int>, int> R_by_x = division_real(R, power_R, x0, power_x0);
+
+    // R_by_x.push_back(0);
 
     cout << "R by x is "<<endl;
     //R_by_x is empty ??? check this
