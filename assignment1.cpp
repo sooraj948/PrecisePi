@@ -679,10 +679,11 @@ pair<vector<int>, int> squareroot(vector<int> R, int power_R, vector<int> x0, in
 
     pair<vector<int>, int> answer;
     while (count < precision)
-    { if(count==12)
-    {
-        break;
-    }   
+    { 
+        // if(count==12)
+    // {
+    //     break;
+    // }   
     // x0 =removeTrailingZeroes(x0);
 
         pair<vector<int>, int> R_by_Xn;
