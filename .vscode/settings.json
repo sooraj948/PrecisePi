@@ -3,6 +3,11 @@
         "vector": "cpp",
         "iostream": "cpp",
         "__split_buffer": "cpp",
-        "string": "cpp"
+        "string": "cpp",
+        "__bit_reference": "cpp",
+        "bitset": "cpp",
+        "chrono": "cpp",
+        "unordered_map": "cpp",
+        "algorithm": "cpp"
     }
 }

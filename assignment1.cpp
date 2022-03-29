@@ -6,7 +6,7 @@
 using namespace std;
 
 #define B 10
-#define precision 100
+#define precision 20
 
 void print_number(vector<int> d)
 {
@@ -583,17 +583,18 @@ vector<int> removeTrailingZeroes(vector<int>a)
 pair<vector<int>, int> division_real(vector<int> a, int power_a, vector<int> b, int power_b)
 {
     vector<int> c = pad_zeroes_at_end(a);
+    static int count = 0;
+    count++;
     // power_a-=precision;
     // print_number(c);
     // cout <<" c is "<<endl;
     // print_number(c);
     b= removeXZeroes(b,b.size()+power_b);
     // b = removeTrailingZeroes(b);
-    // cout<<"The zeroes have been removed";
-    // print_number(b);
+    
     c = division(c, b);
-    // cout <<"b's power is " << power_b<<endl;
-    return make_pair(c, power_a - power_b - precision);
+   //********the power is the problem*********
+    return make_pair(c, power_a - power_b - count*precision);
 }
 // pair<vector<int>, vector<int>> squareroot(vector<int> R, int power_R, vector<int> x0, int power_x0)
 // {
@@ -673,12 +674,17 @@ pair<vector<int>, int> squareroot(vector<int> R, int power_R, vector<int> x0, in
     two.push_back(2);
     int count = 0;
 
+    vector<int> half;
+    half.push_back(B/2);
+
     pair<vector<int>, int> answer;
     while (count < precision)
     { if(count==5)
     {
         break;
-    }   x0 =removeTrailingZeroes(x0);
+    }   
+    // x0 =removeTrailingZeroes(x0);
+
         pair<vector<int>, int> R_by_Xn;
         cout << "R = "; // 2
         print_number(R);
@@ -694,17 +700,17 @@ pair<vector<int>, int> squareroot(vector<int> R, int power_R, vector<int> x0, in
         cout << "Numerator = ";
         print_number(numerator.first);
         cout << "Power of numerator = " << numerator.second << endl;
-        answer = division_real(numerator.first, numerator.second, two, 0);
+        // answer = division_real(numerator.first, numerator.second, two, 0);
+        answer = multiplication_real(numerator.first, numerator.second, half, -1);
         cout << "Answer = ";
         print_number(answer.first);
         cout << "Power of answer = " << answer.second << endl;
         x0 = answer.first;
         power_x0 = answer.second;
-        // int roundoff_factor = 90;
-        // power_x0+=x0.size()-roundoff_factor;
+       
 
 
-        x0 = roundoff(x0,50);
+        // x0 = roundoff(x0,50);
         
 
 
@@ -712,6 +718,7 @@ pair<vector<int>, int> squareroot(vector<int> R, int power_R, vector<int> x0, in
     }
     return answer;
 }
+
 
 int main()
 {
@@ -730,10 +737,10 @@ int main()
     // a.push_back(9);
 
     vector<int> b;
-    b.push_back(8);
-    b.push_back(2);
-    b.push_back(4);
-    b.push_back(1);
+    // b.push_back(8);
+    // b.push_back(2);
+    // b.push_back(4);
+    // b.push_back(1);
     b.push_back(4);
     b.push_back(1);
     // b.push_back(0);
@@ -781,7 +788,7 @@ int main()
     // print_pair_number(c3);
 
     printf("Sq root  \n");
-    pair<vector<int>, int> c4 = squareroot(a, 0, b, -5);
+    pair<vector<int>, int> c4 = squareroot(a, 0, b, -1);
     // print_number(c4.first);
     // printf("%d\n", c4.second);
 
@@ -789,3 +796,4 @@ int main()
 
     return 0;
 }
+
