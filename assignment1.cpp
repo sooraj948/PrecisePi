@@ -203,8 +203,8 @@ vector<int> removeXZeroes(vector<int>a,int num)
     {
         if(num == 1)
         {
-            cout<<"Removed the zeroes"<<endl;
-            print_number(a);
+            // cout<<"Removed the zeroes"<<endl;
+            // print_number(a);
             break;
         }
         num--;
@@ -214,7 +214,7 @@ vector<int> removeXZeroes(vector<int>a,int num)
         }
        else
        {
-           cout <<"inside Xzeroes and breaking"<< endl;
+        //    cout <<"inside Xzeroes and breaking"<< endl;
            break;
        }
     }
@@ -687,25 +687,25 @@ pair<vector<int>, int> squareroot(vector<int> R, int power_R, vector<int> x0, in
     // x0 =removeTrailingZeroes(x0);
 
         pair<vector<int>, int> R_by_Xn;
-        cout << "R = "; // 2
-        print_number(R);
-        cout << "x0 = "; // 1.41428
-        print_number(x0);
-        cout << "Power of x = " << power_x0 << endl; //-5
-        cout << "Power of R = " << power_R << endl;  // 0
+        // cout << "R = "; // 2
+        // print_number(R);
+        // cout << "x0 = "; // 1.41428
+        // print_number(x0);
+        // cout << "Power of x = " << power_x0 << endl; //-5
+        // cout << "Power of R = " << power_R << endl;  // 0
         R_by_Xn = division_real(R, power_R, x0, power_x0);
-        cout << "R_by_Xn = "; // 1
-        print_number(R_by_Xn.first);
-        cout << "Power of R/Xn = " << R_by_Xn.second << endl; // 0
+        // cout << "R_by_Xn = "; // 1
+        // print_number(R_by_Xn.first);
+        // cout << "Power of R/Xn = " << R_by_Xn.second << endl; // 0
         pair<vector<int>, int> numerator = addition_real(x0, power_x0, R_by_Xn.first, R_by_Xn.second);
-        cout << "Numerator = ";
-        print_number(numerator.first);
-        cout << "Power of numerator = " << numerator.second << endl;
+        // cout << "Numerator = ";
+        // print_number(numerator.first);
+        // cout << "Power of numerator = " << numerator.second << endl;
         // answer = division_real(numerator.first, numerator.second, two, 0);
         answer = multiplication_real(numerator.first, numerator.second, half, -1);
-        cout << "Answer = ";
-        print_number(answer.first);
-        cout << "Power of answer = " << answer.second << endl;
+        // cout << "Answer = ";
+        // print_number(answer.first);
+        // cout << "Power of answer = " << answer.second << endl;
         x0 = answer.first;
         power_x0 = answer.second;
        
@@ -720,34 +720,79 @@ pair<vector<int>, int> squareroot(vector<int> R, int power_R, vector<int> x0, in
     return answer;
 }
 
+pair<vector<int> , int> pi()
+{
+    //Constants
+    vector<int> two ;
+    two.push_back(2);
+
+    vector<int> b;
+    b.push_back(4);
+    b.push_back(1);
+
+     vector<int> one ;
+    one.push_back(1);
+
+    vector<int> half ;
+    one.push_back(B/2);
+
+    //initializing a0,b0,p0
+    pair<vector<int>,int> a0 = squareroot(two,0,b,-1) ;//2**0.5
+
+    pair<vector<int> ,int> b0;
+    b0.first.push_back(0);
+    b0.second = 0;
+
+    pair<vector<int> ,int> p0 = addition_real(two,0,a0.first,0);
+
+    int count =0;
+
+   
+
+    
+    while(count<6)
+    {
+        //bn-> an->pn
+        
+
+        pair<vector<int> ,int> one_plus_bn = addition_real(b0.first,b0.second,one,0);
+        pair<vector<int> ,int> root_an = squareroot(a0.first,a0.second,b,-1);
+        pair<vector<int> ,int> an_plus_bn = addition_real(b0.first,b0.second,a0.first,a0.second);
+        pair<vector<int> ,int> numerator_bn1 = multiplication_real(one_plus_bn.first,one_plus_bn.second,root_an.first,root_an.second);
+        b0 = division_real(numerator_bn1.first,numerator_bn1.second,an_plus_bn.first,an_plus_bn.second);
+
+        pair<vector<int> ,int> one_by_root_an = division_real(one,0,root_an.first,root_an.second);
+        pair<vector<int> ,int> numerator_an1 = addition_real(root_an.first,root_an.second,one_by_root_an.first,one_by_root_an.second);
+        a0 = multiplication_real(half,-1,numerator_an1.first,numerator_an1.second);
+
+        pair<vector<int> ,int> one_plus_an1 = addition_real(one,0,a0.first,a0.second);
+        pair<vector<int> ,int> pn_times_bn1 = multiplication_real(p0.first,p0.second,b0.first,b0.second);
+        pair<vector<int> ,int> numerator_pn1 = multiplication_real(one_plus_an1.first,one_plus_an1.second,pn_times_bn1.first,pn_times_bn1.second);
+        pair<vector<int> ,int> one_plus_bn1 = addition_real(one,0,b0.first,b0.second);
+        p0 = division_real(numerator_pn1.first,numerator_pn1.second,one_plus_bn1.first,one_plus_bn1.second);
+        
+    }    
+
+
+    return p0;
+
+    
+    
+}
 
 int main()
 {
 
     vector<int> a;
 
-    // a.push_back(2);
-    // a.push_back(9);
-    // a.push_back(9);
-    // a.push_back(9);
-    // a.push_back(1);
+    
     a.push_back(2);
-    // a.push_back(7);
-    // a.push_back(7);
-    // a.push_back(9);
-    // a.push_back(9);
-
+   
     vector<int> b;
-    // b.push_back(8);
-    // b.push_back(2);
-    // b.push_back(4);
-    // b.push_back(1);
+    
     b.push_back(4);
     b.push_back(1);
-    // b.push_back(0);
-    // b.push_back(0);
-
-    // b.push_back(1);
+    
     print_number(a);
     print_number(b);
 
@@ -788,12 +833,16 @@ int main()
 
     // print_pair_number(c3);
 
-    printf("Sq root  \n");
-    pair<vector<int>, int> c4 = squareroot(a, 0, b, -1);
-    // print_number(c4.first);
-    // printf("%d\n", c4.second);
+    // printf("Sq root  \n");
+    // pair<vector<int>, int> c4 = squareroot(a, 0, b, -1);
+    // // print_number(c4.first);
+    // // printf("%d\n", c4.second);
 
-    print_pair_number(c4);
+    // print_pair_number(c4);
+
+    cout <<"PI:"<< endl;
+    pair<vector<int>, int> PI = pi();
+    print_pair_number(PI);
 
     return 0;
 }
