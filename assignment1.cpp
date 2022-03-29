@@ -6,7 +6,7 @@
 using namespace std;
 
 #define B 10
-#define precision 20
+#define precision 50
 
 void print_number(vector<int> d)
 {
@@ -22,7 +22,7 @@ void print_pair_number(pair<vector<int>,int> d)
 {
     // cout <<"size of vector in print pair "<< d.first.size()<<endl;
 
-    cout <<"0";
+    // cout <<"0";
     int i;
     for ( i= d.first.size() - 1; i > -d.second-1 ; i--)
     {
@@ -679,7 +679,7 @@ pair<vector<int>, int> squareroot(vector<int> R, int power_R, vector<int> x0, in
 
     pair<vector<int>, int> answer;
     while (count < precision)
-    { if(count==5)
+    { if(count==12)
     {
         break;
     }   
