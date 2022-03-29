@@ -20,7 +20,7 @@ void print_number(vector<int> d)
 
 void print_pair_number(pair<vector<int>,int> d)
 {
-    cout <<"size of vector in print pair "<< d.first.size()<<endl;
+    // cout <<"size of vector in print pair "<< d.first.size()<<endl;
 
     cout <<"0";
     int i;
@@ -196,10 +196,12 @@ vector<int> adjustNegativeSign(vector<int> a)
 }
 vector<int> removeXZeroes(vector<int>a,int num)
 {
+    cout <<"num is " << num <<endl;
+    print_number(a);
     
     for (auto it = a.end() - 1; it != a.begin(); --it)
     {
-        if(num == 0)
+        if(num == 1)
         {
             cout<<"Removed the zeroes"<<endl;
             print_number(a);
@@ -543,7 +545,7 @@ vector<int> pad_zeroes_at_end(vector<int> a)
     // if (a.size()<precision)
     // {
 
-        for (int i = 0; i < precision; i++)
+        for (int i = 0; i < 5*precision; i++)
         {
             result.push_back(0);
         }
@@ -554,17 +556,41 @@ vector<int> pad_zeroes_at_end(vector<int> a)
     }
     return result;
 }
+vector<int> removeTrailingZeroes(vector<int>a)
+{
+    for (auto it = a.begin(); it != a.end(); ++it)
+    {
+        if (*it == 0)
+        {
+            // cout<<"Zero is be
+            // ing removed"<<endl;
+            a.erase(it);
+        }
+       else
+       {
+           cout<<"Breaking"<<endl;
+           break;
+       }
+    }
+    // cout<<"Trailing zeroes have been removed"<<endl;
+    print_number(a);
+    return a;
+}
+
 pair<vector<int>, int> division_real(vector<int> a, int power_a, vector<int> b, int power_b)
 {
     vector<int> c = pad_zeroes_at_end(a);
+    power_a-=precision;
     // print_number(c);
     cout <<" c is "<<endl;
     print_number(c);
     b= removeXZeroes(b,b.size()+power_b);
-    
+    b = removeTrailingZeroes(b);
+    cout<<"The zeroes have been removed";
+    print_number(b);
     c = division(c, b);
     cout <<"b's power is " << power_b<<endl;
-    return make_pair(c, power_a - power_b - precision);
+    return make_pair(c, power_a - power_b );
 }
 // pair<vector<int>, vector<int>> squareroot(vector<int> R, int power_R, vector<int> x0, int power_x0)
 // {
@@ -626,6 +652,46 @@ pair<vector<int>, int> sq_root(vector<int> R, int power_R, vector<int> x0, int p
         return x;
 }
 
+pair<vector<int>, int> squareroot(vector<int> R, int power_R, vector<int> x0, int power_x0)
+{
+
+    vector<int> two;
+    two.push_back(2);
+    int count = 0;
+
+    pair<vector<int>, int> answer;
+    while (count < precision)
+    { if(count==5)
+    {
+        break;
+    }   x0 =removeTrailingZeroes(x0);
+        pair<vector<int>, int> R_by_Xn;
+        cout << "R = "; // 2
+        print_number(R);
+        cout << "x0 = "; // 1.41428
+        print_number(x0);
+        cout << "Power of x = " << power_x0 << endl; //-5
+        cout << "Power of R = " << power_R << endl;  // 0
+        R_by_Xn = division_real(R, power_R, x0, power_x0);
+        cout << "R_by_Xn = "; // 1
+        print_number(R_by_Xn.first);
+        cout << "Power of R/Xn = " << R_by_Xn.second << endl; // 0
+        pair<vector<int>, int> numerator = addition_real(x0, power_x0, R_by_Xn.first, R_by_Xn.second);
+        cout << "Numerator = ";
+        print_number(numerator.first);
+        cout << "Power of numerator = " << numerator.second << endl;
+        answer = division_real(numerator.first, numerator.second, two, -1);
+        cout << "Answer = ";
+        print_number(answer.first);
+        cout << "Power of answer = " << answer.second << endl;
+        x0 = answer.first;
+        power_x0 = answer.second;
+
+        count++;
+    }
+    return answer;
+}
+
 int main()
 {
 
@@ -656,37 +722,37 @@ int main()
     print_number(a);
     print_number(b);
 
-    checkAndAdd(a, b);
-    checkAndSubtract(a, b);
-    checkAndMultiply(a, b);
-    vector<int> q = division(a, b);
-    printf("Normal division quotient\n");
-    print_number(q);
-    division_one_digit(a, 8);
-    // vector <int> Q = divTrial(a, b);
-    // print_number(Q);
-    // trialSubtraction(a, b);
-    // trialAddition(a, b);
+    // checkAndAdd(a, b);
+    // checkAndSubtract(a, b);
+    // checkAndMultiply(a, b);
+    // vector<int> q = division(a, b);
+    // printf("Normal division quotient\n");
+    // print_number(q);
+    // division_one_digit(a, 8);
+    // // vector <int> Q = divTrial(a, b);
+    // // print_number(Q);
+    // // trialSubtraction(a, b);
+    // // trialAddition(a, b);
 
-    printf("Addition real \n");
-    pair<vector<int>, int> c = addition_real(a, 0, b, -2);
-    print_number(c.first);
-    printf("%d\n", c.second);
+    // printf("Addition real \n");
+    // pair<vector<int>, int> c = addition_real(a, 0, b, -2);
+    // print_number(c.first);
+    // printf("%d\n", c.second);
 
-    printf("Subtraction real \n");
-    pair<vector<int>, int> c1 = subtraction_real(a, 0, b, -2); // 2-0.01=1.99
-    cout << "answer = ";
-    print_number(c1.first);
-    cout << "power =";
-    printf("%d\n", c1.second);
+    // printf("Subtraction real \n");
+    // pair<vector<int>, int> c1 = subtraction_real(a, 0, b, -2); // 2-0.01=1.99
+    // cout << "answer = ";
+    // print_number(c1.first);
+    // cout << "power =";
+    // printf("%d\n", c1.second);
 
-    printf("Multiplication real \n");
-    pair<vector<int>, int> c2 = multiplication_real(a, -1, b, -2);
-    print_number(c2.first);
-    printf("%d\n", c2.second);
+    // printf("Multiplication real \n");
+    // pair<vector<int>, int> c2 = multiplication_real(a, -1, b, -2);
+    // print_number(c2.first);
+    // printf("%d\n", c2.second);
 
     printf("Division real \n");
-    pair<vector<int>, int> c3 = division_real(a, 0, b, -5);
+    pair<vector<int>, int> c3 = division_real(a, 0, b, -5);cout<<"Answer = "<<endl;
     print_number(c3.first);
     
     printf("%d\n", c3.second);
@@ -694,7 +760,7 @@ int main()
     print_pair_number(c3);
 
     printf("Sq root  \n");
-    pair<vector<int>, int> c4 = sq_root(a, 0, b, -5);
+    pair<vector<int>, int> c4 = squareroot(a, 0, b, -5);
     print_number(c4.first);
     printf("%d\n", c4.second);
 
