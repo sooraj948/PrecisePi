@@ -196,8 +196,8 @@ vector<int> adjustNegativeSign(vector<int> a)
 }
 vector<int> removeXZeroes(vector<int>a,int num)
 {
-    cout <<"num is " << num <<endl;
-    print_number(a);
+    // cout <<"num is " << num <<endl;
+    // print_number(a);
     
     for (auto it = a.end() - 1; it != a.begin(); --it)
     {
@@ -214,6 +214,7 @@ vector<int> removeXZeroes(vector<int>a,int num)
         }
        else
        {
+           cout <<"inside Xzeroes and breaking"<< endl;
            break;
        }
     }
@@ -464,11 +465,11 @@ vector<int> division(vector<int> a, vector<int> b)
     int k = a.size();
     int l = b.size();
     int d = k - l;
-    cout<<"Printing a"<<endl;
-    print_number(a);
-    cout<<"Printing b"<<endl;
-    print_number(b);
-    cout << l << " " << k << endl;
+    // cout<<"Printing a"<<endl;
+    // print_number(a);
+    // cout<<"Printing b"<<endl;
+    // print_number(b);
+    // cout << l << " " << k << endl;
 
     for (int i = d; i >= 0; i--)
     {
@@ -482,20 +483,20 @@ vector<int> division(vector<int> a, vector<int> b)
     //finding first non zero
 
     int denom=1;
-    for (int i=l-1;i>-1;i--)
-    {
-        if (b[i])
-        {
-            denom = b[i];
-            break;
-        }
+    // for (int i=l-1;i>-1;i--)
+    // {
+    //     if (b[i])
+    //     {
+    //         denom = b[i];
+    //         break;
+    //     }
 
             
 
-    }
+    // }
     for (int i = k - l; i >= 0; i--)
     {
-        q[i] = ((r[i + l] * B) + r[i + l - 1]) / denom;
+        q[i] = ((r[i + l] * B) + r[i + l - 1]) / b[l-1];
         // q[i] += r[i + l - 1];
         // q[i] = q[i] / b[l - 1];
 
@@ -542,10 +543,12 @@ vector<int> division(vector<int> a, vector<int> b)
 vector<int> pad_zeroes_at_end(vector<int> a)
 {
     vector<int> result;
+    static int count = 0;
+    count++;
     // if (a.size()<precision)
     // {
 
-        for (int i = 0; i < 5*precision; i++)
+        for (int i = 0; i < count*precision; i++)
         {
             result.push_back(0);
         }
@@ -568,29 +571,29 @@ vector<int> removeTrailingZeroes(vector<int>a)
         }
        else
        {
-           cout<<"Breaking"<<endl;
+        //    cout<<"Breaking"<<endl;
            break;
        }
     }
     // cout<<"Trailing zeroes have been removed"<<endl;
-    print_number(a);
+    // print_number(a);
     return a;
 }
 
 pair<vector<int>, int> division_real(vector<int> a, int power_a, vector<int> b, int power_b)
 {
     vector<int> c = pad_zeroes_at_end(a);
-    power_a-=precision;
+    // power_a-=precision;
     // print_number(c);
-    cout <<" c is "<<endl;
-    print_number(c);
+    // cout <<" c is "<<endl;
+    // print_number(c);
     b= removeXZeroes(b,b.size()+power_b);
-    b = removeTrailingZeroes(b);
-    cout<<"The zeroes have been removed";
-    print_number(b);
+    // b = removeTrailingZeroes(b);
+    // cout<<"The zeroes have been removed";
+    // print_number(b);
     c = division(c, b);
-    cout <<"b's power is " << power_b<<endl;
-    return make_pair(c, power_a - power_b );
+    // cout <<"b's power is " << power_b<<endl;
+    return make_pair(c, power_a - power_b - precision);
 }
 // pair<vector<int>, vector<int>> squareroot(vector<int> R, int power_R, vector<int> x0, int power_x0)
 // {
@@ -652,6 +655,17 @@ pair<vector<int>, int> sq_root(vector<int> R, int power_R, vector<int> x0, int p
         return x;
 }
 
+vector <int> roundoff(vector<int> a,int n)
+{
+    vector<int> ans;
+
+    for (int i=a.size()-n;i<a.size();i++)
+        ans.push_back(a[i]);
+
+    return ans;
+
+}
+
 pair<vector<int>, int> squareroot(vector<int> R, int power_R, vector<int> x0, int power_x0)
 {
 
@@ -680,12 +694,19 @@ pair<vector<int>, int> squareroot(vector<int> R, int power_R, vector<int> x0, in
         cout << "Numerator = ";
         print_number(numerator.first);
         cout << "Power of numerator = " << numerator.second << endl;
-        answer = division_real(numerator.first, numerator.second, two, -1);
+        answer = division_real(numerator.first, numerator.second, two, 0);
         cout << "Answer = ";
         print_number(answer.first);
         cout << "Power of answer = " << answer.second << endl;
         x0 = answer.first;
         power_x0 = answer.second;
+        // int roundoff_factor = 90;
+        // power_x0+=x0.size()-roundoff_factor;
+
+
+        x0 = roundoff(x0,50);
+        
+
 
         count++;
     }
@@ -751,18 +772,20 @@ int main()
     // print_number(c2.first);
     // printf("%d\n", c2.second);
 
-    printf("Division real \n");
-    pair<vector<int>, int> c3 = division_real(a, 0, b, -5);cout<<"Answer = "<<endl;
-    print_number(c3.first);
+    // printf("Division real \n");
+    // pair<vector<int>, int> c3 = division_real(a, 0, b, -5);cout<<"Answer = "<<endl;
+    // print_number(c3.first);
     
-    printf("%d\n", c3.second);
+    // printf("%d\n", c3.second);
 
-    print_pair_number(c3);
+    // print_pair_number(c3);
 
     printf("Sq root  \n");
     pair<vector<int>, int> c4 = squareroot(a, 0, b, -5);
-    print_number(c4.first);
-    printf("%d\n", c4.second);
+    // print_number(c4.first);
+    // printf("%d\n", c4.second);
+
+    print_pair_number(c4);
 
     return 0;
 }
