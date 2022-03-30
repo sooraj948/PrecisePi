@@ -7,6 +7,7 @@ using namespace std;
 
 #define B 10
 #define precision 50
+#define roundoffValue 400
 
 void print_number(vector<int> d)
 {
@@ -672,7 +673,7 @@ pair<vector<int>, int> squareroot(vector<int> R, int power_R, vector<int> x0, in
     half.push_back(B / 2);
 
     pair<vector<int>, int> answer;
-    while (count < precision)
+    while (count < precision / 5)
     {
         // if(count==12)
         // {
@@ -743,36 +744,81 @@ pair<vector<int>, int> pi()
     // print_pair_number(p0);
     int count = 0;
 
-    while (count < 3)
+    while (count < 8)
     {
+        cout << "**********************************************************" << endl;
+        cout << "Count = " << count << endl;
         // bn-> an->pn
 
         pair<vector<int>, int> one_plus_bn = addition_real(b0.first, b0.second, one.first, one.second); // 1+b
-        // print_pair_number(one_plus_bn);
-        pair<vector<int>, int> root_an = squareroot(a0.first, a0.second, b, -1);
-        // print_pair_number(root_an);
-        pair<vector<int>, int> an_plus_bn = addition_real(b0.first, b0.second, a0.first, a0.second);
-        // print_pair_number(an_plus_bn);
-        pair<vector<int>, int> numerator_bn1 = multiplication_real(one_plus_bn.first, one_plus_bn.second, root_an.first, root_an.second);
-        // print_pair_number(numerator_bn1);
-        b0 = division_real(numerator_bn1.first, numerator_bn1.second, an_plus_bn.first, an_plus_bn.second);
-        // print_pair_number(b0);
-        pair<vector<int>, int> one_by_root_an = division_real(one.first, one.second, root_an.first, root_an.second);
-        // print_pair_number(one_by_root_an);
-        pair<vector<int>, int> numerator_an1 = addition_real(root_an.first, root_an.second, one_by_root_an.first, one_by_root_an.second);
-        // print_pair_number(numerator_an1);
-        a0 = multiplication_real(five.first, five.second, numerator_an1.first, numerator_an1.second);
-        // print_pair_number(a0);
-        pair<vector<int>, int> one_plus_an1 = addition_real(one.first, one.second, a0.first, a0.second);
-        // print_pair_number(one_plus_an1);
-        pair<vector<int>, int> pn_times_bn1 = multiplication_real(p0.first, p0.second, b0.first, b0.second);
         // cout << "************************" << endl;
+
+        // one_plus_bn = roundoff(one_plus_bn, roundoffValue);
+
+        // print_pair_number(one_plus_bn);
+        pair<vector<int>, int> root_an = squareroot(a0.first, a0.second, b, -1); // root a
+        // cout << "************************" << endl;
+
+        // root_an = roundoff(root_an, roundoffValue);
+
+        // print_pair_number(root_an);
+        pair<vector<int>, int> an_plus_bn = addition_real(b0.first, b0.second, a0.first, a0.second); // a+b
+        // cout << "************************" << endl;
+
+        // an_plus_bn = roundoff(an_plus_bn, roundoffValue);
+
+        // print_pair_number(an_plus_bn);
+        pair<vector<int>, int> numerator_bn1 = multiplication_real(one_plus_bn.first, one_plus_bn.second, root_an.first, root_an.second); //(1+b)rootA
+        // cout << "************************" << endl;
+
+        // numerator_bn1 = roundoff(numerator_bn1, roundoffValue);
+
+        // print_pair_number(numerator_bn1);
+        b0 = division_real(numerator_bn1.first, numerator_bn1.second, an_plus_bn.first, an_plus_bn.second); // b
+        // cout << "************************" << endl;
+
+        b0 = roundoff(b0, roundoffValue);
+
+        // print_pair_number(b0);
+
+        pair<vector<int>, int> one_by_root_an = division_real(one.first, one.second, root_an.first, root_an.second); // 1/rootA
+        // cout << "************************" << endl;
+
+        // one_by_root_an = roundoff(one_by_root_an, roundoffValue);
+
+        // print_pair_number(one_by_root_an);
+        pair<vector<int>, int> numerator_an1 = addition_real(root_an.first, root_an.second, one_by_root_an.first, one_by_root_an.second); // rootA+1/rootA
+        // cout << "************************" << endl;
+        // numerator_an1 = roundoff(numerator_an1, roundoffValue);
+
+        // print_pair_number(numerator_an1);
+        a0 = multiplication_real(five.first, five.second, numerator_an1.first, numerator_an1.second); // divide by 2
+        // cout << "************************" << endl;
+        a0 = roundoff(a0, roundoffValue);
+
+        // print_pair_number(a0);
+        pair<vector<int>, int> one_plus_an1 = addition_real(one.first, one.second, a0.first, a0.second); // 1+a
+        // cout << "************************" << endl;
+        // one_plus_an1 = roundoff(one_plus_an1, roundoffValue);
+
+        // print_pair_number(one_plus_an1);
+        pair<vector<int>, int> pn_times_bn1 = multiplication_real(p0.first, p0.second, b0.first, b0.second); // p*b
+        // cout << "************************" << endl;
+        // pn_times_bn1 = roundoff(pn_times_bn1, roundoffValue);
         // print_pair_number(pn_times_bn1);
         pair<vector<int>, int> numerator_pn1 = multiplication_real(one_plus_an1.first, one_plus_an1.second, pn_times_bn1.first, pn_times_bn1.second);
+        // cout << "************************" << endl;
+        // numerator_pn1 = roundoff(numerator_pn1, roundoffValue);
+
         // print_pair_number(numerator_pn1);
         pair<vector<int>, int> one_plus_bn1 = addition_real(one.first, one.second, b0.first, b0.second);
+        // cout << "************************" << endl;
+        // one_plus_bn1 = roundoff(one_plus_bn1, roundoffValue);
+
         // print_pair_number(one_plus_bn1);
         p0 = division_real(numerator_pn1.first, numerator_pn1.second, one_plus_bn1.first, one_plus_bn1.second);
+        // cout << "************************" << endl;
+
         p0 = roundoff(p0, 256);
         print_pair_number(p0);
         count++;
