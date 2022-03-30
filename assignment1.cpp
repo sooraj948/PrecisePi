@@ -7,7 +7,7 @@ using namespace std;
 
 #define B 10
 #define precision 75
-#define roundoffValue 400
+#define roundoffValue 500
 
 void print_number(vector<int> d)
 {
@@ -627,6 +627,7 @@ pair<vector<int>, int> sq_root(vector<int> R, int power_R, vector<int> x0, int p
 
     pair<vector<int>, int> R_by_x = division_real(R, power_R, x0, power_x0);
 
+
     // R_by_x.push_back(0);
 
     cout << "R by x is " << endl;
@@ -761,7 +762,7 @@ pair<vector<int>, int> pi()
     // print_pair_number(p0);
     int count = 0;
 
-    while (count < 8)
+    while (count < 9)
     {
         cout << "**********************************************************" << endl;
         cout << "Count = " << count << endl;
