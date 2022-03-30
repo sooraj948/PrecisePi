@@ -761,7 +761,7 @@ pair<vector<int>, int> pi()
     // print_pair_number(p0);
     int count = 0;
 
-    while (count < 7)
+    while (count < 8)
     {
         cout << "**********************************************************" << endl;
         cout << "Count = " << count << endl;
@@ -836,7 +836,7 @@ pair<vector<int>, int> pi()
         p0 = division_real(numerator_pn1.first, numerator_pn1.second, one_plus_bn1.first, one_plus_bn1.second);
         // cout << "************************" << endl;
         p0.first = removeLeadingZereos(p0.first);
-        p0 = roundoff(p0, 256);
+        p0 = roundoff(p0, roundoffValue);
         print_pair_number(p0);
         count++;
     }
