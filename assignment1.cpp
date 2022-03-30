@@ -6,7 +6,7 @@
 using namespace std;
 
 #define B 10
-#define precision 50
+#define precision 75
 #define roundoffValue 400
 
 void print_number(vector<int> d)
@@ -711,6 +711,23 @@ pair<vector<int>, int> squareroot(vector<int> R, int power_R, vector<int> x0, in
     return answer;
 }
 
+vector<int> removeLeadingZereos(vector<int> a)
+
+{
+    for (auto it = a.end() - 1; it != a.begin(); --it)
+    {
+        if (*it == 0)
+        {
+            a.erase(it);
+        }
+        else
+        {
+            cout << "Removed the leading zeroes" << endl;
+            break;
+        }
+    }
+    return a;
+}
 pair<vector<int>, int> pi()
 {
     // Constants
@@ -744,7 +761,7 @@ pair<vector<int>, int> pi()
     // print_pair_number(p0);
     int count = 0;
 
-    while (count < 8)
+    while (count < 7)
     {
         cout << "**********************************************************" << endl;
         cout << "Count = " << count << endl;
@@ -818,7 +835,7 @@ pair<vector<int>, int> pi()
         // print_pair_number(one_plus_bn1);
         p0 = division_real(numerator_pn1.first, numerator_pn1.second, one_plus_bn1.first, one_plus_bn1.second);
         // cout << "************************" << endl;
-
+        p0.first = removeLeadingZereos(p0.first);
         p0 = roundoff(p0, 256);
         print_pair_number(p0);
         count++;
