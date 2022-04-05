@@ -680,6 +680,7 @@ bool isZero(vector<int> a)
     cout << "Returning true" << endl;
     return true;
 }
+
 vector<int> DecimalToBaseB(vector<int> a, int b) //
 {
     pair<vector<int>, vector<int>> divide;
@@ -698,7 +699,6 @@ vector<int> DecimalToBaseB(vector<int> a, int b) //
         print_number(divide.first);
         cout << "Answer's remainder on dividing with base B = " << b << endl;
         print_number(divide.second);
-        int index = 0;
         int number = 0;
 
         for (int i = divide.second.size() - 1; i >= 0; i--)
@@ -707,7 +707,6 @@ vector<int> DecimalToBaseB(vector<int> a, int b) //
             cout << "The current digit is = " << divide.second[i] << endl;
             number += divide.second[i] * (int)(pow(10, i));
             cout << "The value of number = " << number << endl;
-            index++;
         }
         answer.push_back(number);
         a = divide.first;
@@ -719,6 +718,84 @@ vector<int> DecimalToBaseB(vector<int> a, int b) //
     }
     print_number(result);
     return result;
+}
+vector<int> getInteger(vector<int> a, int power_a)
+{
+    vector<int> integer;
+    for (int i = power_a; i < a.size(); i++)
+    {
+        integer.push_back(a[i]);
+    }
+    return integer;
+}
+vector<int> getDecimal(vector<int> a, int power_a)
+{
+    vector<int> decimal;
+    for (int i = 0; i < power_a; i++)
+    {
+        decimal.push_back(a[i]);
+    }
+    return decimal;
+}
+pair<vector<int>, int> DecimalToBaseBReal(vector<int> a, int p, int b) // 29.125 =  5 2 1 9 2 , -3
+{
+    vector<int> base;
+    base.push_back(b);
+    vector<int> integer, decimal;
+    int power_a = p * -1;
+    decimal = getDecimal(a, power_a);
+    integer = getInteger(a, power_a);
+    cout << "Decimal = " << endl;
+    print_number(decimal);
+    cout << "Integer = " << endl;
+    print_number(integer);
+    vector<int> result_integer = DecimalToBaseB(integer, b); // 1 1 0 1
+    cout << "Answer for the integer part = " << endl;
+    print_number(result_integer);
+    pair<vector<int>, int> product;
+    vector<int> beforeDecimal, afterDecimal;
+    vector<int> answer;
+    do
+    {
+        cout << "The number for multiplication is " << endl;
+        print_pair_number(make_pair(decimal, p));
+        product = multiplication_real(decimal, p, base, 0); // 0.1875*2 = 0.3750
+        print_pair_number(product);
+        beforeDecimal = getInteger(product.first, product.second * -1);
+        afterDecimal = getDecimal(product.first, product.second * -1); // product.first = removeLeadingZereos(product.first);
+        print_number(beforeDecimal);                                   // 2 1
+        print_number(afterDecimal);
+        int number = 0;
+        for (int i = 0; i <= beforeDecimal.size() - 1; i++)
+        {
+
+            cout << "The current digit is = " << beforeDecimal[i] << endl;
+            number += beforeDecimal[i] * (int)(pow(10, i));
+            cout << "The value of number = " << number << endl;
+        }
+        answer.push_back(number);
+        decimal = afterDecimal;
+        print_number(afterDecimal);
+
+        p = afterDecimal.size() * -1;
+
+        // decimal = product.first;
+        // p = product.second;
+    } while (!isZero(afterDecimal));
+    cout << "The result of the decimal part is " << endl;
+    print_number(answer); // 0 0 1 1
+    vector<int> result;
+    for (int i = answer.size() - 1; i >= 0; i--)
+    {
+        result.push_back(answer[i]);
+    }
+    for (int i = 0; i < result_integer.size(); i++)
+    {
+        result.push_back(result_integer[i]);
+    }
+    cout << "*******************************" << endl;
+    print_number(result);
+    return make_pair(result, answer.size() * -1);
 }
 // vector<int> TenToBaseB(int b)
 // {
@@ -838,22 +915,24 @@ pair<vector<int>, int> pi()
 int main()
 {
 
-    cout << "karatsuba multiplication" << endl;
+    // cout << "karatsuba multiplication" << endl;
 
-    vector<int> a = {0, 1};
-    vector<int> b = {1, 8};
-    vector<int> d = checkAndSubtract(b, a);
-    print_number(d);
-    vector<int> c = karatsuba(a, b);
-    print_number(c);
-
-    cout << "PI:" << endl;
+    vector<int> a = {5, 7, 8, 1, 1, 1};
+    vector<int> b = {5, 2, 6, 0, 4, 1, 7, 3};
+    // vector<int> d = checkAndSubtract(b, a);
+    // print_number(d);
+    // vector<int> c = karatsuba(a, b);
+    // print_number(c);
+    print_pair_number(make_pair(a, -4));
+    // cout << "PI:" << endl;
     // pair<vector<int>, int> PI = pi();
     // print_pair_number(PI);
     cout << "Base conversion" << endl;
-    vector<int> answer;
-     answer = DecimalToBaseB(a, 64);
-    print_number(answer);
+    // vector<int> answer;
+    // answer = DecimalToBaseB(b, 64);
+    // print_number(answer);
+    print_pair_number(DecimalToBaseBReal(b, -6, 8));
+    print_pair_number(make_pair(b, -6));
     // cout << "Base to decimal conversion" << endl;
     // answer = BaseBToDecimal(b, 64);
     return 0;
