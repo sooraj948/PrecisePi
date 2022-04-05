@@ -1,7 +1,10 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <math.h>
 // #include <pair>
+#include <algorithm>
+
 #include <utility>
 using namespace std;
 
@@ -13,7 +16,7 @@ void print_number(vector<int> d)
 {
     for (int i = d.size() - 1; i > -1; i--)
     {
-        cout << d[i] << "";
+        cout << d[i] << " ";
     }
 
     cout << endl;
@@ -204,6 +207,43 @@ vector<int> removeXZeroes(vector<int> a, int num)
     }
     return a;
 }
+// vector<int> subtraction(vector<int> a, vector<int> b)
+// {
+//     vector<int> result;
+//     int carry = 0;
+//     // padding zeroes
+//     if (a.size() > b.size())
+//     {
+//         while (b.size() != a.size())
+//         {
+//             b.push_back(0);
+//         }
+//     }
+//     else
+//     {
+//         while (b.size() != a.size())
+//         {
+//             a.push_back(0);
+//         }
+//     }
+
+//     for (int i = 0; i < a.size(); i++)
+//     {
+
+//         if (a[i] - b[i] + carry < 0)
+//         {
+//             result.push_back(B + (a[i] - b[i] + carry));
+//             carry = -1;
+//         }
+//         else
+//         {
+//             result.push_back(a[i] - b[i] + carry);
+//             carry = 0;
+//         }
+//     }
+//     result.push_back(carry);
+//     return result;
+// }
 vector<int> subtraction(vector<int> a, vector<int> b) // b-a
 
 {
@@ -258,6 +298,7 @@ vector<int> subtraction(vector<int> a, vector<int> b) // b-a
         if (carry)
             c.push_back(carry);
     }
+    cout << "Answer =" << endl;
     print_number(c);
     return c;
 }
@@ -376,8 +417,15 @@ vector<int> karatsuba(vector<int> a, vector<int> b)
 
     vector<int> z3 = karatsuba(addition(a1, a0), addition(b1, b0));
 
-    vector<int> z4 = subtraction(z3, addition(z1, z2));
-
+    vector<int> z4 = checkAndSubtract(addition(z1, z2), z3);
+    cout << "z3 " << endl;
+    print_number(z3);
+    cout << "z1" << endl;
+    print_number(z1);
+    cout << "z2" << endl;
+    print_number(z2);
+    cout << "z4  " << endl;
+    print_number(z4);
     return z4;
 }
 
@@ -397,6 +445,70 @@ vector<int> division_one_digit(vector<int> a, int d)
     }
     return q;
 }
+pair<vector<int>, vector<int>> divisionWithRemainder(vector<int> a, vector<int> b)
+{
+    vector<int> r;
+    vector<int> q;
+    int carry = 0;
+    int temp;
+    int k = a.size();
+    int l = b.size();
+    int d = k - l;
+
+    for (int i = d; i >= 0; i--)
+    {
+        q.push_back(0);
+    }
+    r = a;
+
+    r.push_back(0);
+
+    int denom = 1;
+
+    for (int i = k - l; i >= 0; i--)
+    {
+        q[i] = ((r[i + l] * B) + r[i + l - 1]) / b[l - 1];
+
+        if (q[i] >= B)
+        {
+            q[i] = B - 1;
+        }
+        carry = 0;
+        for (int j = 0; j < l; j++)
+        {
+            temp = r[i + j] - (q[i] * b[j]) + carry;
+            carry = temp / B;
+            r[i + j] = temp % B;
+            if (r[i + j] < 0)
+            {
+                carry -= 1;
+                r[i + j] += B;
+            }
+        }
+        r[i + l] = r[i + l] + carry;
+        while (r[i + l] < 0)
+        {
+            carry = 0;
+            for (int j = 0; j < l; j++)
+            {
+                temp = r[i + j] + b[j] + carry;
+                carry = temp / B;
+                r[i + j] = temp % B;
+                if (r[i + j] < 0)
+                {
+                    carry -= 1;
+                    r[i + j] += B;
+                }
+            }
+            r[i + l] += carry;
+            q[i] -= 1;
+        }
+    }
+    // cout << "Remainder = " << endl;
+    // print_number(r);
+    return make_pair(q, r);
+}
+
 vector<int> division(vector<int> a, vector<int> b)
 {
     vector<int> r;
@@ -540,9 +652,7 @@ pair<vector<int>, int> squareroot(vector<int> R, int power_R, vector<int> x0, in
     }
     return answer;
 }
-
 vector<int> removeLeadingZereos(vector<int> a)
-
 {
     for (auto it = a.end() - 1; it != a.begin(); --it)
     {
@@ -557,6 +667,111 @@ vector<int> removeLeadingZereos(vector<int> a)
     }
     return a;
 }
+bool isZero(vector<int> a)
+{
+    for (int i = 0; i < a.size(); i++)
+    {
+        if (a[i] != 0)
+        {
+            cout << "Returning false" << endl;
+            return false;
+        }
+    }
+    cout << "Returning true" << endl;
+    return true;
+}
+vector<int> DecimalToBaseB(vector<int> a, int b) //
+{
+    pair<vector<int>, vector<int>> divide;
+    vector<int> answer;
+    vector<int> quotient, remainder;
+    vector<int> base;
+    base.push_back(b);
+    while (!isZero(a))
+    {
+        divide = divisionWithRemainder(a, base);
+        divide.second = removeLeadingZereos(divide.second);
+        divide.first = removeLeadingZereos(divide.first);
+        cout << "Base conversion of a" << endl;
+        print_number(a);
+        cout << "Answer's quotient on dividing with base B = " << b << endl;
+        print_number(divide.first);
+        cout << "Answer's remainder on dividing with base B = " << b << endl;
+        print_number(divide.second);
+        int index = 0;
+        int number = 0;
+
+        for (int i = divide.second.size() - 1; i >= 0; i--)
+        {
+
+            cout << "The current digit is = " << divide.second[i] << endl;
+            number += divide.second[i] * (int)(pow(10, i));
+            cout << "The value of number = " << number << endl;
+            index++;
+        }
+        answer.push_back(number);
+        a = divide.first;
+    }
+    vector<int> result;
+    for (int i = 0; i < answer.size(); i++)
+    {
+        result.push_back(answer[i]);
+    }
+    print_number(result);
+    return result;
+}
+// vector<int> TenToBaseB(int b)
+// {
+//     vector<int> ten;
+//     ten.push_back(0);
+//     ten.push_back(1);
+//     while (!isZero(ten))
+//     {
+
+//     }
+// }
+// vector<int> BaseBToDecimal(vector<int> a, int b)
+// {
+//     vector<int> ten = {0, 1};
+//     vector<int> base = DecimalToBaseB(ten, b);
+//     cout << "Base " << endl;
+//     print_number(base);
+//     pair<vector<int>, vector<int>> divide;
+//     vector<int> answer;
+//     vector<int> quotient, remainder;
+//     while (!isZero(a))
+//     {
+//         divide = divisionWithRemainder(a, base);
+//         divide.second = removeLeadingZereos(divide.second);
+//         divide.first = removeLeadingZereos(divide.first);
+//         cout << "Base conversion of a" << endl;
+//         print_number(a);
+//         cout << "Answer's quotient on dividing with base B = " << b << endl;
+//         print_number(divide.first);
+//         cout << "Answer's remainder on dividing with base B = " << b << endl;
+//         print_number(divide.second);
+//         int index = 0;
+//         int number = 0;
+
+//         for (int i = divide.second.size() - 1; i >= 0; i--)
+//         {
+
+//             cout << "The current digit is = " << divide.second[i] << endl;
+//             number += divide.second[i] * (int)(pow(10, i));
+//             cout << "The value of number = " << number << endl;
+//             index++;
+//         }
+//         answer.push_back(number);
+//         a = divide.first;
+//     }
+//     vector<int> result;
+//     for (int i = 0; i < answer.size(); i++)
+//     {
+//         result.push_back(answer[i]);
+//     }
+//     print_number(result);
+//     return result;
+// }
 pair<vector<int>, int> pi()
 {
     // Constants
@@ -623,9 +838,23 @@ pair<vector<int>, int> pi()
 int main()
 {
 
-    cout << "PI:" << endl;
-    pair<vector<int>, int> PI = pi();
-    print_pair_number(PI);
+    cout << "karatsuba multiplication" << endl;
 
+    vector<int> a = {0, 1};
+    vector<int> b = {1, 8};
+    vector<int> d = checkAndSubtract(b, a);
+    print_number(d);
+    vector<int> c = karatsuba(a, b);
+    print_number(c);
+
+    cout << "PI:" << endl;
+    // pair<vector<int>, int> PI = pi();
+    // print_pair_number(PI);
+    cout << "Base conversion" << endl;
+    vector<int> answer;
+     answer = DecimalToBaseB(a, 64);
+    print_number(answer);
+    // cout << "Base to decimal conversion" << endl;
+    // answer = BaseBToDecimal(b, 64);
     return 0;
 }
