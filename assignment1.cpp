@@ -813,7 +813,7 @@ pair<vector<int>, int> BaseBToDecimal(vector<int> a, int p, int b, int B)
 
         if (answer.size() == a.size())
         {
-            cout << "Breaking" << endl;
+            // cout << "Breaking" << endl;
             break;
         }
     } while (!isZero(afterDecimal));
@@ -929,10 +929,10 @@ int main()
         // pi
         pair<vector<int>, int> PI = pi(base);
 
-        print_pair_number(PI);
+        // print_pair_number(PI);
 
         PI = BaseBToDecimal(PI.first, PI.second, base, base);
-        print_pair_number(PI);
+        // print_pair_number(PI);
 
         PI = roundoff(PI, prec + 1);
 
