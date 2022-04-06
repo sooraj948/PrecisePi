@@ -445,7 +445,7 @@ vector<int> division_one_digit(vector<int> a, int d, int B)
     }
     return q;
 }
-pair<vector<int>, vector<int>> divisionWithRemainder(vector<int> a, vector<int> b, int B)
+pair<vector<int>, vector<int> > divisionWithRemainder(vector<int> a, vector<int> b, int B)
 {
     vector<int> r;
     vector<int> q;
@@ -683,7 +683,7 @@ bool isZero(vector<int> a)
 
 vector<int> DecimalToBaseB(vector<int> a, int b, int B) //
 {
-    pair<vector<int>, vector<int>> divide;
+    pair<vector<int>, vector<int> > divide;
     vector<int> answer;
     vector<int> quotient, remainder;
     vector<int> base;
@@ -802,7 +802,7 @@ vector<int> TenToBaseB(int b, int B)
     vector<int> ten;
     ten.push_back(0);
     ten.push_back(1);
-    pair<vector<int>, vector<int>> divide;
+    pair<vector<int>, vector<int> > divide;
     vector<int> answer;
     vector<int> quotient, remainder;
     vector<int> base;
@@ -837,7 +837,7 @@ vector<int> TenToBaseB(int b, int B)
 
 vector<int> getIntegerPart(vector<int> a, vector<int> base, int B)
 {
-    pair<vector<int>, vector<int>> divide;
+    pair<vector<int>, vector<int> > divide;
     vector<int> answer;
     vector<int> quotient, remainder;
     while (!isZero(a))
@@ -880,26 +880,26 @@ vector<int> getIntegerPart(vector<int> a, vector<int> base, int B)
     print_number(result);
     return result;
 }
-pair<vector<int>, int> BaseBToDecimal(vector<int> a, int p, int b, int B)
+pair<vector<int>, int> BaseBToDecimal(vector<int> a, int p, int b, int B)//wth is this function??*****
 {
     vector<int> base = TenToBaseB(b, B); // ten in base b format
-    cout << "Base = " << endl;
-    print_number(base);
+    // cout << "Base = " << endl;
+    // print_number(base);
     vector<int> integer, decimal;
     int power_a = p * -1;
     decimal = getDecimal(a, -1 * power_a); // gets the decimal portion of the number
     integer = getInteger(a, -1 * power_a);
-    cout << "Decimal = " << endl;
-    print_number(decimal);
-    cout << "Integer = " << endl;
-    print_number(integer);
+    // cout << "Decimal = " << endl;
+    // print_number(decimal);
+    // cout << "Integer = " << endl;
+    // print_number(integer);
     vector<int> result_integer = getIntegerPart(integer, base, B); // 1 1 0 1
-    cout << "Answer for the integer part = " << endl;
-    print_number(result_integer);
+    // cout << "Answer for the integer part = " << endl;
+    // print_number(result_integer);
     pair<vector<int>, int> product;
     vector<int> beforeDecimal, afterDecimal;
     vector<int> answer;
-    cout << "Hello there!" << endl;
+    // cout << "Hello there!" << endl;
     return make_pair(base, p);
     // do
     // {
@@ -1003,7 +1003,7 @@ pair<vector<int>, int> pi(int B)
     b0.first.push_back(0);
     b0.second = 0;
     pair<vector<int>, int> five;
-    five.first.push_back(5);
+    five.first.push_back(B/2);
     five.second = -1;
 
     pair<vector<int>, int> p0 = addition_real(two, 0, a0.first, a0.second, B);
@@ -1053,7 +1053,7 @@ int main()
 
     // cout << "karatsuba multiplication" << endl;
 
-    vector<int> a = {1,0,0,1,1};
+    // vector<int> a = {1,0,0,1,1};
     // vector<int> b = {5, 2, 6, 0, 4, 1, 7, 3};
     // vector<int> d = checkAndSubtract(b, a);
     // print_number(d);
@@ -1061,7 +1061,7 @@ int main()
     // print_number(c);
     // print_pair_number(make_pair(a, -4));
     // cout << "PI:" << endl;
-    // pair<vector<int>, int> PI = pi();
+    // pair<vector<int>, int> PI = pi(10);
     // print_pair_number(PI);
     // cout << "Base conversion" << endl;
     // vector<int> answer;
@@ -1073,6 +1073,46 @@ int main()
     // answer = BaseBToDecimal(b, 64);
 
     // TenToBaseB(8, 2);
-    BaseBToDecimal(a, 0, 2, 2);
+    int check,prec,base_digits;
+    
+    
+    cin >> check >> prec >> base_digits;
+
+
+    int base  = 1<<base_digits;//2**Base_digits
+    cout << base << endl;
+    if (check==1)
+    {
+        //pi
+        pair<vector<int>, int> PI = pi(base);
+        
+
+        print_pair_number(PI);
+
+        PI = BaseBToDecimal(PI.first,-PI.second,base,base);
+        print_pair_number(PI);
+
+         PI = roundoff(PI,prec+1);
+
+         print_pair_number(PI);
+
+    }
+
+    else
+    {
+        //root 2
+        vector<int> two ;
+        two.push_back(2);
+        vector<int> x0 ;
+        x0.push_back(1);
+
+        pair<vector<int>, int> root2 = squareroot(two,0,x0,0,10);
+        root2 = roundoff(root2,prec+1);
+
+        print_pair_number(root2);
+
+    }
+    // // BaseBToDecimal(a, 0, 2, 2);
+
     return 0;
 }

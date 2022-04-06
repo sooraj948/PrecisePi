@@ -6,7 +6,8 @@ print("correct upto :")
 for i in range(len(s)):
     print(i)
     if (s[i]!=root2[i]):
-        print(i)
+        # print(i)
+        
         print("input value at position: ",s[i])
         print("actual value at position: ",root2[i])
         break
