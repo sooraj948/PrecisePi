@@ -1,18 +1,16 @@
-// Done by Chinmay PArekh - IMT2020069 and Sooraj Sathish - IMT2020004
+// Done by Chinmay Parekh - IMT2020069 and Sooraj Sathish - IMT2020004
 #include <vector>
 #include <string>
 #include <iostream>
 #include <math.h>
-// #include <pair>
 #include <algorithm>
 #include <utility>
 using namespace std;
 
-// #define B 10
 #define precision 75
 #define roundoffValue 500
 
-void print_number(vector<int> d)
+void print_number(vector<int> d) //auxillary function to print the vector in integer number format
 {
     for (int i = d.size() - 1; i > -1; i--)
     {
@@ -22,7 +20,7 @@ void print_number(vector<int> d)
     cout << endl;
 }
 
-void print_pair_number(pair<vector<int>, int> d)
+void print_pair_number(pair<vector<int>, int> d) // auxillary function to print the vector in real number format
 {
 
     int i;
@@ -38,7 +36,7 @@ void print_pair_number(pair<vector<int>, int> d)
 
     cout << endl;
 }
-vector<int> addition(vector<int> a, vector<int> b, int B)
+vector<int> addition(vector<int> a, vector<int> b, int B) //performs the addiiton of two given vectors in base B
 {
     int l1 = a.size();
     int l2 = b.size();
@@ -83,7 +81,7 @@ vector<int> addition(vector<int> a, vector<int> b, int B)
     return c;
 }
 
-vector<int> pad_zeroes(vector<int> a, int n)
+vector<int> pad_zeroes(vector<int> a, int n) // adds 0 at the back of the vector
 {
     vector<int> c;
 
@@ -95,7 +93,7 @@ vector<int> pad_zeroes(vector<int> a, int n)
 
     return c;
 }
-pair<vector<int>, int> addition_real(vector<int> a, int power_a, vector<int> b, int power_b, int B)
+pair<vector<int>, int> addition_real(vector<int> a, int power_a, vector<int> b, int power_b, int B) //function to perform addition of two vectors in real number format
 {
 
     int l1 = a.size();
@@ -154,7 +152,7 @@ vector<int> adjustCarry(vector<int> a, int index, int B) // returns a vector aft
 
     return a;
 }
-vector<int> adjustSign(vector<int> a)
+vector<int> adjustSign(vector<int> a) //auxillary function used in subtraction
 {
     for (auto it = a.end() - 1; it != a.begin(); --it)
     {
@@ -169,7 +167,7 @@ vector<int> adjustSign(vector<int> a)
     }
     return a;
 }
-vector<int> adjustNegativeSign(vector<int> a)
+vector<int> adjustNegativeSign(vector<int> a) //auxillary function used in subtraction
 {
     for (auto it = a.end() - 1; it != a.begin(); --it)
     {
@@ -185,7 +183,7 @@ vector<int> adjustNegativeSign(vector<int> a)
     }
     return a;
 }
-vector<int> removeXZeroes(vector<int> a, int num)
+vector<int> removeXZeroes(vector<int> a, int num) //removes leading 'num, number of zeroes
 {
 
     for (auto it = a.end() - 1; it != a.begin(); --it)
@@ -207,10 +205,10 @@ vector<int> removeXZeroes(vector<int> a, int num)
     }
     return a;
 }
-vector<int> subtraction(vector<int> a, vector<int> b, int B) // b-a
+vector<int> subtraction(vector<int> a, vector<int> b, int B) // performs subtraction of vector b and vector a in integer format
 
 {
-    int l1 = a.size(); // always less than l2
+    int l1 = a.size(); // always less than or equal to l2
     int l2 = b.size();
     vector<int> c;
 
@@ -265,7 +263,7 @@ vector<int> subtraction(vector<int> a, vector<int> b, int B) // b-a
 
     return c;
 }
-vector<int> checkAndSubtract(vector<int> a, vector<int> b, int B)
+vector<int> checkAndSubtract(vector<int> a, vector<int> b, int B) //adjusts the signs of the vectors and subtracts them
 {
     vector<int> d;
     if (comparator(a, b)) // a is greater than b
@@ -281,7 +279,7 @@ vector<int> checkAndSubtract(vector<int> a, vector<int> b, int B)
     }
     return d;
 }
-pair<vector<int>, int> subtraction_real(vector<int> a, int power_a, vector<int> b, int power_b, int B)
+pair<vector<int>, int> subtraction_real(vector<int> a, int power_a, vector<int> b, int power_b, int B)//performs subtraction of two vectors in real number format in base B
 {
 
     int l1 = a.size();
@@ -304,7 +302,7 @@ pair<vector<int>, int> subtraction_real(vector<int> a, int power_a, vector<int> 
 
     return make_pair(c, power_a);
 }
-vector<int> multiplication(vector<int> a, vector<int> b, int B)
+vector<int> multiplication(vector<int> a, vector<int> b, int B) //function to perform multiplication of two vectors in base B
 {
 
     int l = a.size();
@@ -332,24 +330,24 @@ vector<int> multiplication(vector<int> a, vector<int> b, int B)
     return c;
 }
 
-pair<vector<int>, int> multiplication_real(vector<int> a, int power_a, vector<int> b, int power_b, int B)
+pair<vector<int>, int> multiplication_real(vector<int> a, int power_a, vector<int> b, int power_b, int B)//function to perform multiplication of two vectors in real number format in base B
 {
     vector<int> c = multiplication(a, b, B);
     return make_pair(c, power_a + power_b);
 }
 
-void checkAndAdd(vector<int> a, vector<int> b, int B)
+void checkAndAdd(vector<int> a, vector<int> b, int B)///adjusts the sign before performing addition
 {
     vector<int> c = addition(a, b, B);
     c = adjustSign(c);
 }
-vector<int> checkAndMultiply(vector<int> a, vector<int> b, int B)
+vector<int> checkAndMultiply(vector<int> a, vector<int> b, int B)//adjusts the sign before performing multiplication
 {
     vector<int> e = multiplication(a, b, B);
     e = adjustSign(e);
     return e;
 }
-vector<int> karatsuba(vector<int> a, vector<int> b, int B)
+vector<int> karatsuba(vector<int> a, vector<int> b, int B)//fast multiplication using karatsubas algorithm
 {
     int l = a.size();
     int k = b.size();
@@ -381,7 +379,7 @@ vector<int> karatsuba(vector<int> a, vector<int> b, int B)
     return z4;
 }
 
-vector<int> division_one_digit(vector<int> a, int d, int B)
+vector<int> division_one_digit(vector<int> a, int d, int B)//divisor is 1 word long at max
 {
     int hi = 0;
     int k = a.size();
@@ -397,7 +395,7 @@ vector<int> division_one_digit(vector<int> a, int d, int B)
     }
     return q;
 }
-pair<vector<int>, vector<int>> divisionWithRemainder(vector<int> a, vector<int> b, int B)
+pair<vector<int>, vector<int>> divisionWithRemainder(vector<int> a, vector<int> b, int B)//returns both remainder and quotient
 {
     vector<int> r;
     vector<int> q;
@@ -460,7 +458,7 @@ pair<vector<int>, vector<int>> divisionWithRemainder(vector<int> a, vector<int> 
     return make_pair(q, r);
 }
 
-vector<int> division(vector<int> a, vector<int> b, int B)
+vector<int> division(vector<int> a, vector<int> b, int B)// returns quotient of a/b
 {
     vector<int> r;
     vector<int> q;
@@ -523,7 +521,7 @@ vector<int> division(vector<int> a, vector<int> b, int B)
     return q;
 }
 
-vector<int> pad_zeroes_at_end(vector<int> a)
+vector<int> pad_zeroes_at_end(vector<int> a)//add zeroes to lsb
 {
     vector<int> result;
     static int count = 0;
@@ -540,7 +538,7 @@ vector<int> pad_zeroes_at_end(vector<int> a)
     }
     return result;
 }
-vector<int> removeTrailingZeroes(vector<int> a)
+vector<int> removeTrailingZeroes(vector<int> a)//remove lsb zeroes
 {
     for (auto it = a.begin(); it != a.end(); ++it)
     {
@@ -557,7 +555,7 @@ vector<int> removeTrailingZeroes(vector<int> a)
     return a;
 }
 
-pair<vector<int>, int> division_real(vector<int> a, int power_a, vector<int> b, int power_b, int B)
+pair<vector<int>, int> division_real(vector<int> a, int power_a, vector<int> b, int power_b, int B)//calculates a/b and returns a pair which represents a real number
 {
     vector<int> c = pad_zeroes_at_end(a);
     static int count = 0;
@@ -567,7 +565,7 @@ pair<vector<int>, int> division_real(vector<int> a, int power_a, vector<int> b, 
     return make_pair(c, power_a - power_b - count * precision);
 }
 
-pair<vector<int>, int> roundoff(pair<vector<int>, int> a, int n)
+pair<vector<int>, int> roundoff(pair<vector<int>, int> a, int n)//rounds off /truncates upto n decimal places
 {
     pair<vector<int>, int> ans;
 
@@ -577,7 +575,7 @@ pair<vector<int>, int> roundoff(pair<vector<int>, int> a, int n)
     return ans;
 }
 
-pair<vector<int>, int> squareroot(vector<int> R, int power_R, vector<int> x0, int power_x0, int B)
+pair<vector<int>, int> squareroot(vector<int> R, int power_R, vector<int> x0, int power_x0, int B)//calculates squareroot
 {
 
     vector<int> two;
@@ -603,7 +601,7 @@ pair<vector<int>, int> squareroot(vector<int> R, int power_R, vector<int> x0, in
     }
     return answer;
 }
-vector<int> removeLeadingZereos(vector<int> a)
+vector<int> removeLeadingZereos(vector<int> a)//remove msb zeroes
 {
     for (auto it = a.end() - 1; it != a.begin(); --it)
     {
@@ -618,7 +616,7 @@ vector<int> removeLeadingZereos(vector<int> a)
     }
     return a;
 }
-bool isZero(vector<int> a)
+bool isZero(vector<int> a) //function to check if the entire vector is zero
 {
     for (int i = 0; i < a.size(); i++)
     {
@@ -630,7 +628,7 @@ bool isZero(vector<int> a)
     return true;
 }
 
-vector<int> DecimalToBaseB(vector<int> a, int b, int B) //
+vector<int> DecimalToBaseB(vector<int> a, int b, int B) //converts decimal numbers to base B
 {
     pair<vector<int>, vector<int>> divide;
     vector<int> answer;
@@ -660,7 +658,7 @@ vector<int> DecimalToBaseB(vector<int> a, int b, int B) //
     }
     return result;
 }
-vector<int> getInteger(vector<int> a, int power_a)
+vector<int> getInteger(vector<int> a, int power_a) //returns the integer portion of the real number
 {
     vector<int> integer;
     for (int i = power_a; i < a.size(); i++)
@@ -669,7 +667,7 @@ vector<int> getInteger(vector<int> a, int power_a)
     }
     return integer;
 }
-vector<int> getDecimal(vector<int> a, int power_a)
+vector<int> getDecimal(vector<int> a, int power_a)//returns the decimal portion of the real number
 {
 
     vector<int> decimal;
@@ -679,7 +677,7 @@ vector<int> getDecimal(vector<int> a, int power_a)
     }
     return decimal;
 }
-pair<vector<int>, int> DecimalToBaseBReal(vector<int> a, int p, int b, int B) // 29.125 =  5 2 1 9 2 , -3
+pair<vector<int>, int> DecimalToBaseBReal(vector<int> a, int p, int b, int B) // converts decimal numbers to base B of real numbers
 {
     vector<int> base;
     base.push_back(b);
@@ -688,7 +686,7 @@ pair<vector<int>, int> DecimalToBaseBReal(vector<int> a, int p, int b, int B) //
     decimal = getDecimal(a, power_a);
     integer = getInteger(a, power_a);
 
-    vector<int> result_integer = DecimalToBaseB(integer, b, B); // 1 1 0 1
+    vector<int> result_integer = DecimalToBaseB(integer, b, B);
 
     pair<vector<int>, int> product;
     vector<int> beforeDecimal, afterDecimal;
@@ -706,7 +704,7 @@ pair<vector<int>, int> DecimalToBaseBReal(vector<int> a, int p, int b, int B) //
 
     return make_pair(result, answer.size() * -1);
 }
-vector<int> TenToBaseB(int b, int B)
+vector<int> TenToBaseB(int b, int B) //converts '10' to base B
 {
     vector<int> ten;
     ten.push_back(0);
@@ -742,7 +740,7 @@ vector<int> TenToBaseB(int b, int B)
     return result;
 }
 
-vector<int> getIntegerPart(vector<int> a, vector<int> base, int B)
+vector<int> getIntegerPart(vector<int> a, vector<int> base, int B) //returns the integer part of the given real number vector
 {
     pair<vector<int>, vector<int>> divide;
     vector<int> answer;
@@ -777,7 +775,7 @@ vector<int> getIntegerPart(vector<int> a, vector<int> base, int B)
     }
     return result;
 }
-pair<vector<int>, int> BaseBToDecimal(vector<int> a, int p, int b, int B)
+pair<vector<int>, int> BaseBToDecimal(vector<int> a, int p, int b, int B) //converts a base B vector to a decimal vector
 {
     vector<int> base = TenToBaseB(b, B); // ten in base b format
 
@@ -786,7 +784,7 @@ pair<vector<int>, int> BaseBToDecimal(vector<int> a, int p, int b, int B)
     decimal = getDecimal(a, power_a); // gets the decimal portion of the number
     integer = getInteger(a, power_a);
 
-    vector<int> result_integer = getIntegerPart(integer, base, B); // 1 1 0 1
+    vector<int> result_integer = getIntegerPart(integer, base, B); 
 
     pair<vector<int>, int> product;
     vector<int> beforeDecimal, afterDecimal;
@@ -794,9 +792,9 @@ pair<vector<int>, int> BaseBToDecimal(vector<int> a, int p, int b, int B)
 
     do
     {
-        product = multiplication_real(decimal, p, base, 0, B); // 0.1875*2 = 0.3750
+        product = multiplication_real(decimal, p, base, 0, B); 
         beforeDecimal = getInteger(product.first, product.second * -1);
-        afterDecimal = getDecimal(product.first, product.second * -1); // product.first = removeLeadingZereos(product.first);
+        afterDecimal = getDecimal(product.first, product.second * -1); 
         int number = 0;
         for (int i = 0; i <= beforeDecimal.size() - 1; i++)
         {
@@ -811,7 +809,6 @@ pair<vector<int>, int> BaseBToDecimal(vector<int> a, int p, int b, int B)
 
         if (answer.size() == a.size())
         {
-            // cout << "Breaking" << endl;
             break;
         }
     } while (!isZero(afterDecimal));
@@ -828,8 +825,9 @@ pair<vector<int>, int> BaseBToDecimal(vector<int> a, int p, int b, int B)
 
     return make_pair(result, answer.size() * -1);
 }
-pair<vector<int>, int> pi(int B)
+pair<vector<int>, int> pi(int B)//calculates pi
 {
+
     // Constants
     vector<int> two; // 2
     two.push_back(2);
@@ -893,6 +891,7 @@ pair<vector<int>, int> pi(int B)
 
 int main()
 {
+    // Done by Chinmay Parekh - IMT2020069 and Sooraj Sathish - IMT2020004
 
     int check, prec, base_digits;
 
