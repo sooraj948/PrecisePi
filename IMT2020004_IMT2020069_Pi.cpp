@@ -1,10 +1,10 @@
+// Done by Chinmay PArekh - IMT2020069 and Sooraj Sathish - IMT2020004
 #include <vector>
 #include <string>
 #include <iostream>
 #include <math.h>
 // #include <pair>
 #include <algorithm>
-
 #include <utility>
 using namespace std;
 
@@ -648,9 +648,7 @@ vector<int> DecimalToBaseB(vector<int> a, int b, int B) //
         for (int i = divide.second.size() - 1; i >= 0; i--)
         {
 
-            cout << "The current digit is = " << divide.second[i] << endl;
             number += divide.second[i] * (int)(pow(10, i));
-            cout << "The value of number = " << number << endl;
         }
         answer.push_back(number);
         a = divide.first;
@@ -896,43 +894,17 @@ pair<vector<int>, int> pi(int B)
 int main()
 {
 
-    // cout << "karatsuba multiplication" << endl;
-
-    // vector<int> a = {4, 2, 5, 5, 7, 3, 0, 1, 1, 3};
-    // vector<int> b = {5, 2, 6, 0, 4, 1, 7, 3};
-    // vector<int> d = checkAndSubtract(b, a);
-    // print_number(d);
-    // vector<int> c = karatsuba(a, b);
-    // print_number(c);
-    // print_pair_number(make_pair(a, -4));
-    // cout << "PI:" << endl;
-    // pair<vector<int>, int> PI = pi(10);
-    // print_pair_number(PI);
-    // cout << "Base conversion" << endl;
-    // vector<int> answer;
-    // answer = DecimalToBaseB(b, 64);
-    // print_number(answer);
-    // print_pair_number(DecimalToBaseBReal(b, -6, 8,8));
-    // print_pair_number(make_pair(a, -9));
-    // cout << "Base to decimal conversion" << endl;
-    // answer = BaseBToDecimal(b, 64);
-
-    // TenToBaseB(8, 2);
     int check, prec, base_digits;
 
     cin >> check >> prec >> base_digits;
 
     int base = 1 << base_digits; // 2**Base_digits
-    cout << base << endl;
     if (check == 1)
     {
         // pi
         pair<vector<int>, int> PI = pi(base);
 
-        // print_pair_number(PI);
-
         PI = BaseBToDecimal(PI.first, PI.second, base, base);
-        // print_pair_number(PI);
 
         PI = roundoff(PI, prec + 1);
 
@@ -945,7 +917,7 @@ int main()
         vector<int> two;
         two.push_back(2);
         vector<int> x0;
-        x0 = {4,1,4,1};
+        x0 = {4, 1, 4, 1};
 
         pair<vector<int>, int> root2 = squareroot(two, 0, x0, -3, base);
         root2 = BaseBToDecimal(root2.first, root2.second, base, base);
@@ -953,7 +925,6 @@ int main()
 
         print_pair_number(root2);
     }
-    // pair<vector<int>, int> root2 = BaseBToDecimal(a, -9, 8, 8);
-    // print_pair_number(root2);
+
     return 0;
 }
